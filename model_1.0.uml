@@ -13,12 +13,6 @@
   </nodes>
   <notes />
   <edges>
-    <edge source="com.github.cc3002.finalreality.model.character.player.PlayerCharacter" target="com.github.cc3002.finalreality.model.character.AbstractCharacter">
-      <point x="0.0" y="-49.5" />
-      <point x="531.5" y="451.0" />
-      <point x="448.5" y="451.0" />
-      <point x="106.75" y="116.5" />
-    </edge>
     <edge source="com.github.cc3002.finalreality.model.character.Enemy" target="com.github.cc3002.finalreality.model.character.AbstractCharacter">
       <point x="0.0" y="-61.0" />
       <point x="152.0" y="451.0" />
@@ -29,9 +23,17 @@
       <point x="0.0" y="-116.5" />
       <point x="0.0" y="71.5" />
     </edge>
+    <edge source="com.github.cc3002.finalreality.model.character.player.PlayerCharacter" target="com.github.cc3002.finalreality.model.character.AbstractCharacter">
+      <point x="0.0" y="-49.5" />
+      <point x="531.5" y="451.0" />
+      <point x="448.5" y="451.0" />
+      <point x="106.75" y="116.5" />
+    </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.6453022578295702" x="326.20949989923383" y="612.4821731638614" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="0.6428571428571429" x="497.5" y="437.99999999999994" />
+  <SelectedNodes>
+    <node>com.github.cc3002.finalreality.model.character.Enemy</node>
+  </SelectedNodes>
   <Categories>
     <Category>Fields</Category>
     <Category>Constructors</Category>
