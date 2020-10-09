@@ -85,6 +85,12 @@ public abstract class AbstractCharacter implements ICharacter {
     scheduledExecutor.shutdown();
   }
 
+  /**
+   * Gets the name of this Character
+   *
+   * @return 'name' parameter
+   * @since 1.0
+   */
   @Override
   public String getName() {
     return name;
