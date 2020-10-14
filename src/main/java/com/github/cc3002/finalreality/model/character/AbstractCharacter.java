@@ -23,18 +23,47 @@ public abstract class AbstractCharacter implements ICharacter {
    * Handles this Character's turn
    */
   protected final BlockingQueue<ICharacter> turnsQueue;
+
   /**
    * Character's name
    */
   protected final String name;
+
   /**
    * Character's class
    */
   private final CharacterClass characterClass;
+
+  /**
+   * Character's maximum HP
+   */
+  private final int maxHP;
+
+  /**
+   * Character's current HP
+   */
+  private int HP;
+
+  /**
+   * Character's maximum mana (set to 0 if not mage)
+   */
+  private final int maxMana;
+
+  /**
+   * Character's current mana (set to 0 if not mage)
+   */
+  private int mana;
+
+  /**
+   * Character's defense
+   */
+  private final int defense;
+
   /**
    * Current equipped Weapon by this Character
    */
   private Weapon equippedWeapon = null;
+
   /**
    * Handles this Character's turn
    */
@@ -48,13 +77,30 @@ public abstract class AbstractCharacter implements ICharacter {
    *    Character's name
    * @param characterClass
    *    Character's class
+   * @param maxHP
+   *    Character's maximum HP
+   * @param defense
+   *    Character's defense
+   * @param maxMana
+   *    Character's maximum mana
    * @since 1.0
    */
   protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
-      @NotNull String name, CharacterClass characterClass) {
+      @NotNull String name, CharacterClass characterClass, int maxHP, int defense, int maxMana) {
     this.turnsQueue = turnsQueue;
     this.name = name;
     this.characterClass = characterClass;
+    this.maxHP = maxHP;
+    this.HP = maxHP;
+    this.defense = defense;
+    if(characterClass.isMage) {
+      this.maxMana = maxMana;
+      this.mana = maxMana;
+    }
+    else{
+      this.maxMana = 0;
+      this.mana = 0;
+    }
   }
 
   /**
@@ -86,17 +132,6 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   /**
-   * Gets the name of this Character
-   *
-   * @return 'name' parameter
-   * @since 1.0
-   */
-  @Override
-  public String getName() {
-    return name;
-  }
-
-  /**
    * Equips a weapon to this Character, modifying the 'equippedWeapon' parameter
    *
    * @param weapon
@@ -122,6 +157,17 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   /**
+   * Gets the name of this Character
+   *
+   * @return 'name' parameter
+   * @since 1.0
+   */
+  @Override
+  public String getName() {
+    return name;
+  }
+
+  /**
    * Gets the class of this Character
    *
    * @return 'characterClass' parameter
@@ -130,5 +176,59 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public CharacterClass getCharacterClass() {
     return characterClass;
+  }
+
+  /**
+   * Gets the maximum HP of this Character
+   *
+   * @return 'maxHP' parameter
+   * @since 1.0
+   */
+  @Override
+  public int getMaxHP() {
+    return maxHP;
+  }
+
+  /**
+   * Gets the current HP of this Character
+   *
+   * @return 'HP' parameter
+   * @since 1.0
+   */
+  @Override
+  public int getHP() {
+    return HP;
+  }
+
+  /**
+   * Gets the defense of this Character
+   *
+   * @return 'defense' parameter
+   * @since 1.0
+   */
+  @Override
+  public int getDefense() {
+    return defense;
+  }
+  /**
+   * Gets the maximum mana of this Character
+   *
+   * @return 'maxMana' parameter
+   * @since 1.0
+   */
+  @Override
+  public int getMaxMana() {
+    return maxMana;
+  }
+
+  /**
+   * Gets the current mana of this Character
+   *
+   * @return 'mana' parameter
+   * @since 1.0
+   */
+  @Override
+  public int getMana() {
+    return mana;
   }
 }

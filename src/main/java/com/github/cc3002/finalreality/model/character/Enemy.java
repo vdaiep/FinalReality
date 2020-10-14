@@ -30,12 +30,17 @@ public class Enemy extends AbstractCharacter {
    *    weight of this Enemy
    * @param turnsQueue
    *    queue with the characters to play
+   * @param maxHP
+   *    Maximum HP of this Enemy
+   * @param defense
+   *    Defense of this Enemy
    *
    * @since 1.0
    */
   public Enemy(@NotNull final String name, final int weight,
-      @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name, CharacterClass.ENEMY);
+      @NotNull final BlockingQueue<ICharacter> turnsQueue, int maxHP,
+               int defense) {
+    super(turnsQueue, name, CharacterClass.ENEMY, maxHP, defense, 0);
     this.weight = weight;
   }
 
@@ -54,7 +59,7 @@ public class Enemy extends AbstractCharacter {
    *
    * @param o
    *    object to compare with
-   * @return true if equals, false otherwise
+   * @return true if equals, false otherwise (does not count current HP and mana)
    * @since 1.0
    */
   @Override
@@ -65,8 +70,13 @@ public class Enemy extends AbstractCharacter {
     if (!(o instanceof Enemy)) {
       return false;
     }
-    final Enemy enemy = (Enemy) o;
-    return getWeight() == enemy.getWeight();
+    final Enemy that = (Enemy) o;
+    return getWeight() == that.getWeight()
+            && getCharacterClass() == that.getCharacterClass()
+            && getName().equals(that.getName())
+            && getMaxHP() == that.getMaxHP()
+            && getDefense() == that.getDefense()
+            && getMaxMana() == that.getMaxMana();
   }
 
   /**

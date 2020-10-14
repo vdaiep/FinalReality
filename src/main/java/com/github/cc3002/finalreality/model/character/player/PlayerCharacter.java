@@ -19,16 +19,26 @@ public class PlayerCharacter extends AbstractCharacter {
   /**
    * Creates a new character.
    *
-   * @param name           the character's name
-   * @param turnsQueue     the queue with the characters waiting for their turn
-   * @param characterClass the class of this character
+   * @param name
+   *    the character's name
+   * @param turnsQueue
+   *    the queue with the characters waiting for their turn
+   * @param characterClass
+   *    the class of this character
+   * @param maxHP
+   *    Character's maximum HP
+   * @param defense
+   *    Character's defense
+   * @param maxMana
+   *    Character's maximum mana
    * @see CharacterClass
    * @since 1.0
    */
   public PlayerCharacter(@NotNull String name,
                          @NotNull BlockingQueue<ICharacter> turnsQueue,
-                         final CharacterClass characterClass) {
-    super(turnsQueue, name, characterClass);
+                         final CharacterClass characterClass,
+                         int maxHP, int defense, int maxMana) {
+    super(turnsQueue, name, characterClass, maxHP, defense, maxMana);
   }
 
   /**
@@ -47,7 +57,7 @@ public class PlayerCharacter extends AbstractCharacter {
    *
    * @param o
    *    object to compare with
-   * @return true if equals, false otherwise
+   * @return true if equals, false otherwise (does not count current HP and mana)
    * @since 1.0
    */
   @Override
@@ -60,6 +70,9 @@ public class PlayerCharacter extends AbstractCharacter {
     }
     final PlayerCharacter that = (PlayerCharacter) o;
     return getCharacterClass() == that.getCharacterClass()
-        && getName().equals(that.getName());
+        && getName().equals(that.getName())
+        && getMaxHP() == that.getMaxHP()
+        && getDefense() == that.getDefense()
+        && getMaxMana() == that.getMaxMana();
   }
 }

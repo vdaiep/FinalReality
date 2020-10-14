@@ -30,6 +30,41 @@ public interface ICharacter {
   String getName();
 
   /**
+   * Returns this character's maximum HP.
+   *
+   * @since 1.0
+   */
+  int getMaxHP();
+
+  /**
+   * Returns this character's current HP.
+   *
+   * @since 1.0
+   */
+  int getHP();
+
+  /**
+   * Returns this character's defense.
+   *
+   * @since 1.0
+   */
+  int getDefense();
+
+  /**
+   * Returns this character's maximum mana.
+   *
+   * @since 1.0
+   */
+  int getMaxMana();
+
+  /**
+   * Returns this character's current mana.
+   *
+   * @since 1.0
+   */
+  int getMana();
+
+  /**
    * Equips a weapon to the character.
    *
    * @since 1.0

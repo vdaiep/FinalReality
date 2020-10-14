@@ -20,7 +20,7 @@ public enum CharacterClass {
    * Indicates if this CharacterClass can use magical properties: being able to use spells,
    * true if it is, false otherwise
    */
-  protected final boolean isMage;
+  public final boolean isMage;
 
   /**
    * Incorporates 'isMage' parameter to each CharacterClass
