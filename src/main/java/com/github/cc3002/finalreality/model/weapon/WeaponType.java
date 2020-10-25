@@ -19,7 +19,7 @@ public enum WeaponType {
    * Indicates if this Weapon can use magical properties: having magicDamage > 0
    * and being able to use spells (on mages only), true if it is, false otherwise
    */
-  protected final boolean isMagical;
+  public final boolean isMagical;
 
   /**
    * Incorporates 'isMagical' parameter to each WeaponType

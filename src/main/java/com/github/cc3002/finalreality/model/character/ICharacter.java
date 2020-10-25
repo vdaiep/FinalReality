@@ -1,6 +1,7 @@
 package com.github.cc3002.finalreality.model.character;
 
 import com.github.cc3002.finalreality.model.character.player.CharacterClass;
+import com.github.cc3002.finalreality.model.weapon.SpellClass;
 import com.github.cc3002.finalreality.model.weapon.Weapon;
 
 /**
@@ -9,7 +10,7 @@ import com.github.cc3002.finalreality.model.weapon.Weapon;
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
- * @version 1.0
+ * @version 1.01
  * @since 1.0
  */
 public interface ICharacter {
@@ -65,9 +66,73 @@ public interface ICharacter {
   int getMana();
 
   /**
+   * Poisons this Character
+   *
+   * @param poisonDamage
+   *    strength of the poisoning
+   * @since 1.0
+   */
+  void getPoisoned(int poisonDamage);
+
+  /**
+   * Paralyzes this Character
+   *
+   * @since 1.01
+   */
+  void getParalyzed();
+
+  /**
+   * Burns this Character
+   *
+   * @param burnDamage
+   *    strength of the burning
+   * @since 1.01
+   */
+  void getBurnt(int burnDamage);
+
+  /**
+   * Applies burn and poison effects.
+   *
+   * @since 1.01
+   */
+  void applyStatusDamage();
+
+  /**
+   * Attacks another Character
+   *
+   * @param that
+   *    Character to be attacked.
+   * @return   0 if successful,
+   *          -1 if failed because 'this' is not alive,
+   *          -2 if failed because 'that' is not alive,
+   *          -3 if failed because 'this' has no equipped weapon,
+   *          -9 if successful but couldn't attack due to paralysis.
+   * @since 1.01
+   */
+  int attack(AbstractCharacter that);
+
+  /**
+   * Casts a spell on another Character
+   *
+   * @param that
+   *    Character to cast the spell on.
+   * @return   0 if successful,
+   *          -1 if failed because 'this' has 0 HP,
+   *          -2 if failed because 'that' has 0 HP,
+   *          -3 if failed because 'this' has no equipped weapon,
+   *          -4 if failed because 'this' is not a mage,
+   *          -5 if failed because 'this' has equipped a non-magical weapon,
+   *          -6 if failed because 'this' kind of mage can not use this spell,
+   *          -7 if failed because 'this' has not enough mana to cast this spell,
+   *          -9 if successful but couldn't use spell due to paralysis.
+   * @since 1.01
+   */
+  int castSpell(AbstractCharacter that, SpellClass spell);
+
+  /**
    * Equips a weapon to the character.
    *
-   * @since 1.0
+   * @since 1.01
    */
   void equip(Weapon weapon);
 
