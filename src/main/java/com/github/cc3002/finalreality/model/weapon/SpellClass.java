@@ -7,7 +7,7 @@ import com.github.cc3002.finalreality.model.character.player.CharacterClass;
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
- * @version 1.01
+ * @version 1.02
  * @since 1.01
  */
 public enum SpellClass {
@@ -79,5 +79,5 @@ public enum SpellClass {
         this.paralysisProbability = paralysisProbability;
         this.burnProbability = burnProbability;
     }
-}
 
+}

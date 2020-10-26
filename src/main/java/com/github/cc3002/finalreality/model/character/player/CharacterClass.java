@@ -5,7 +5,7 @@ package com.github.cc3002.finalreality.model.character.player;
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
- * @version 1.0
+ * @version 1.02
  * @since 1.0
  */
 public enum CharacterClass {

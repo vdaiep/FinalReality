@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
- * @version 1.0
+ * @version 1.02
  * @since 1.0
  */
 public class PlayerCharacter extends AbstractCharacter {

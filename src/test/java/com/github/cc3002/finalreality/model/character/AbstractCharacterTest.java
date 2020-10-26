@@ -3,6 +3,8 @@ package com.github.cc3002.finalreality.model.character;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import com.github.cc3002.finalreality.model.character.player.CharacterClass;
+import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
 import com.github.cc3002.finalreality.model.weapon.Weapon;
 import com.github.cc3002.finalreality.model.weapon.WeaponType;
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ import org.junit.jupiter.api.Test;
 public abstract class AbstractCharacterTest {
 
   protected BlockingQueue<ICharacter> turns;
-  protected List<ICharacter> testCharacters;
-  protected Weapon testWeapon;
+  protected List<AbstractCharacter> testCharacters;
+  protected List<Weapon> testWeapons;
 
   /**
    * Checks that the character waits the appropriate amount of time for it's turn.
@@ -31,8 +33,10 @@ public abstract class AbstractCharacterTest {
   @Test
   void waitTurnTest() {
     Assertions.assertTrue(turns.isEmpty());
-    tryToEquip(testCharacters.get(0));
-    testCharacters.get(0).waitTurn();
+    AbstractCharacter character = new PlayerCharacter("Darius", turns, CharacterClass.KNIGHT, 100, 20, 20);
+    Weapon weapon = new Weapon("BF Sword", 30, 0, 10, WeaponType.SWORD);
+    tryToEquip(character, weapon);
+    character.waitTurn();
     try {
       // Thread.sleep is not accurate so this values may be changed to adjust the
       // acceptable error margin.
@@ -41,14 +45,14 @@ public abstract class AbstractCharacterTest {
       Assertions.assertEquals(0, turns.size());
       Thread.sleep(200);
       Assertions.assertEquals(1, turns.size());
-      Assertions.assertEquals(testCharacters.get(0), turns.peek());
+      Assertions.assertEquals(character, turns.peek());
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
   }
 
-  private void tryToEquip(ICharacter character) {
-    character.equip(testWeapon);
+  private void tryToEquip(ICharacter character, Weapon weapon) {
+    character.equip(weapon);
   }
 
   protected void checkConstruction(final ICharacter expectedCharacter,
@@ -63,7 +67,7 @@ public abstract class AbstractCharacterTest {
 
   protected void basicSetUp() {
     turns = new LinkedBlockingQueue<>();
-    testWeapon = new Weapon("Test", 15, 20, 10, WeaponType.AXE);
+    testWeapons = new ArrayList<>();
     testCharacters = new ArrayList<>();
   }
 }

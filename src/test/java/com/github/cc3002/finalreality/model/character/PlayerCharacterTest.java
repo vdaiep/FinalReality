@@ -1,5 +1,7 @@
 package com.github.cc3002.finalreality.model.character;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -8,6 +10,10 @@ import com.github.cc3002.finalreality.model.character.player.CharacterClass;
 import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
 import java.util.EnumMap;
 import java.util.Map;
+
+import com.github.cc3002.finalreality.model.weapon.SpellClass;
+import com.github.cc3002.finalreality.model.weapon.Weapon;
+import com.github.cc3002.finalreality.model.weapon.WeaponType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,11 +26,16 @@ import org.junit.jupiter.api.Test;
  */
 class PlayerCharacterTest extends AbstractCharacterTest {
 
-  private static final String BLACK_MAGE_NAME = "Vivi";
-  private static final String KNIGHT_NAME = "Adelbert";
-  private static final String WHITE_MAGE_NAME = "Eiko";
-  private static final String ENGINEER_NAME = "Cid";
-  private static final String THIEF_NAME = "Zidane";
+  private static final String BLACK_MAGE_NAME = "Xerath";
+  private static final String KNIGHT_NAME = "Garen";
+  private static final String WHITE_MAGE_NAME = "Lulu";
+  private static final String ENGINEER_NAME = "Heimerdinger";
+  private static final String THIEF_NAME = "Shaco";
+  private static final String SWORD_NAME = "Infinity Edge";
+  private static final String AXE_NAME = "Black Cleaver";
+  private static final String KNIFE_NAME = "Duskblade of Draktharr";
+  private static final String STAFF_NAME = "Void Staff";
+  private static final String BOW_NAME = "Runaan's Hurricane";
   private Map<CharacterClass, String> characterNames;
   private Map<CharacterClass, Integer> characterHPs;
   private Map<CharacterClass, Integer> characterDefenses;
@@ -32,11 +43,80 @@ class PlayerCharacterTest extends AbstractCharacterTest {
 
   /**
    * Setup method.
-   * Creates a new character named Vivi with 10 speed and links it to a turn queue.
+   * Creates test Characters and Weapons
+   *
    */
   @BeforeEach
   void setUp() {
     super.basicSetUp();
+
+    Map<WeaponType, String> weaponNames = new EnumMap<>(WeaponType.class);
+    weaponNames.put(WeaponType.SWORD, SWORD_NAME);
+    weaponNames.put(WeaponType.AXE, AXE_NAME);
+    weaponNames.put(WeaponType.KNIFE, KNIFE_NAME);
+    weaponNames.put(WeaponType.STAFF, STAFF_NAME);
+    weaponNames.put(WeaponType.BOW, BOW_NAME);
+
+    Map<WeaponType, Integer> weaponDamages = new EnumMap<>(WeaponType.class);
+    weaponDamages.put(WeaponType.SWORD, 50);
+    weaponDamages.put(WeaponType.AXE, 80);
+    weaponDamages.put(WeaponType.KNIFE, 40);
+    weaponDamages.put(WeaponType.STAFF, 15);
+    weaponDamages.put(WeaponType.BOW, 50);
+
+    Map<WeaponType, Integer> weaponMagicDamages = new EnumMap<>(WeaponType.class);
+    weaponMagicDamages.put(WeaponType.SWORD, 15);
+    weaponMagicDamages.put(WeaponType.AXE, 10);
+    weaponMagicDamages.put(WeaponType.KNIFE, 25);
+    weaponMagicDamages.put(WeaponType.STAFF, 60);
+    weaponMagicDamages.put(WeaponType.BOW, 20);
+
+    Map<WeaponType, Integer> weaponWeights = new EnumMap<>(WeaponType.class);
+    weaponWeights.put(WeaponType.SWORD, 25);
+    weaponWeights.put(WeaponType.AXE, 50);
+    weaponWeights.put(WeaponType.KNIFE, 15);
+    weaponWeights.put(WeaponType.STAFF, 30);
+    weaponWeights.put(WeaponType.BOW, 20);
+
+    testWeapons.add(new Weapon(
+            weaponNames.get(WeaponType.SWORD),
+            weaponDamages.get(WeaponType.SWORD),
+            weaponMagicDamages.get(WeaponType.SWORD),
+            weaponWeights.get(WeaponType.SWORD),
+            WeaponType.SWORD
+    ));
+
+    testWeapons.add(new Weapon(
+            weaponNames.get(WeaponType.AXE),
+            weaponDamages.get(WeaponType.AXE),
+            weaponMagicDamages.get(WeaponType.AXE),
+            weaponWeights.get(WeaponType.AXE),
+            WeaponType.AXE
+    ));
+
+    testWeapons.add(new Weapon(
+            weaponNames.get(WeaponType.KNIFE),
+            weaponDamages.get(WeaponType.KNIFE),
+            weaponMagicDamages.get(WeaponType.KNIFE),
+            weaponWeights.get(WeaponType.KNIFE),
+            WeaponType.KNIFE
+    ));
+
+    testWeapons.add(new Weapon(
+            weaponNames.get(WeaponType.STAFF),
+            weaponDamages.get(WeaponType.STAFF),
+            weaponMagicDamages.get(WeaponType.STAFF),
+            weaponWeights.get(WeaponType.STAFF),
+            WeaponType.STAFF
+    ));
+
+    testWeapons.add(new Weapon(
+            weaponNames.get(WeaponType.BOW),
+            weaponDamages.get(WeaponType.BOW),
+            weaponMagicDamages.get(WeaponType.BOW),
+            weaponWeights.get(WeaponType.BOW),
+            WeaponType.BOW
+    ));
 
     characterNames = new EnumMap<>(CharacterClass.class);
     characterNames.put(CharacterClass.BLACK_MAGE, BLACK_MAGE_NAME);
@@ -61,10 +141,10 @@ class PlayerCharacterTest extends AbstractCharacterTest {
 
     characterManas = new EnumMap<>(CharacterClass.class);
     characterManas.put(CharacterClass.BLACK_MAGE, 100);
-    characterManas.put(CharacterClass.KNIGHT, 0);
+    characterManas.put(CharacterClass.KNIGHT, 100);
     characterManas.put(CharacterClass.WHITE_MAGE, 100);
-    characterManas.put(CharacterClass.ENGINEER, 0);
-    characterManas.put(CharacterClass.THIEF, 0);
+    characterManas.put(CharacterClass.ENGINEER, 100);
+    characterManas.put(CharacterClass.THIEF, 100);
 
     testCharacters.add(new PlayerCharacter(
             characterNames.get(CharacterClass.BLACK_MAGE),
@@ -113,7 +193,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
   }
 
   /**
-   * Checks that the class' constructor and equals method works properly.
+   * Checks that the class' constructor and equals method work properly.
    */
   @Test
   void constructorTest() {
@@ -142,11 +222,245 @@ class PlayerCharacterTest extends AbstractCharacterTest {
 
   @Test
   void equipWeaponTest() {
-    for (var character :
-        testCharacters) {
+    for (var character : testCharacters) {
       assertNull(character.getEquippedWeapon());
-      character.equip(testWeapon);
-      assertEquals(testWeapon, character.getEquippedWeapon());
+      for (var weapon : testWeapons) {
+        CharacterClass characterClass = character.getCharacterClass();
+        WeaponType weaponType = weapon.getType();
+        character.equip(weapon);
+        switch (characterClass){
+          case KNIGHT:
+            switch (weaponType){
+              case SWORD:
+              case AXE:
+              case KNIFE:
+                assertEquals(weapon, character.getEquippedWeapon());
+                break;
+              case STAFF:
+              case BOW:
+                assertNull(character.getEquippedWeapon());
+                break;
+            }
+            break;
+          case ENGINEER:
+            switch (weaponType){
+              case AXE:
+              case BOW:
+                assertEquals(weapon, character.getEquippedWeapon());
+                break;
+              case SWORD:
+              case KNIFE:
+              case STAFF:
+                assertNull(character.getEquippedWeapon());
+                break;
+            }
+            break;
+          case THIEF:
+            switch (weaponType){
+              case SWORD:
+              case STAFF:
+              case BOW:
+                assertEquals(weapon, character.getEquippedWeapon());
+                break;
+              case AXE:
+              case KNIFE:
+                assertNull(character.getEquippedWeapon());
+                break;
+            }
+            break;
+          case BLACK_MAGE:
+            switch (weaponType){
+              case KNIFE:
+              case STAFF:
+                assertEquals(weapon, character.getEquippedWeapon());
+                break;
+              case SWORD:
+              case AXE:
+              case BOW:
+                assertNull(character.getEquippedWeapon());
+                break;
+            }
+            break;
+          case WHITE_MAGE:
+            switch (weaponType){
+              case STAFF:
+                assertEquals(weapon, character.getEquippedWeapon());
+                break;
+              case SWORD:
+              case AXE:
+              case KNIFE:
+              case BOW:
+                assertNull(character.getEquippedWeapon());
+                break;
+            }
+            break;
+        }
+        character.unequip();
+      }
     }
   }
+
+  @Test
+  void interactionsTest() {
+    /* Local set-up */
+    AbstractCharacter black_mage = testCharacters.get(0);
+    AbstractCharacter knight = testCharacters.get(1);
+    AbstractCharacter white_mage = testCharacters.get(2);
+    AbstractCharacter engineer = testCharacters.get(3);
+    AbstractCharacter thief = testCharacters.get(4);
+    Weapon sword = testWeapons.get(0);
+    Weapon axe = testWeapons.get(1);
+    Weapon knife = testWeapons.get(2);
+    Weapon staff = testWeapons.get(3);
+    Weapon bow = testWeapons.get(4);
+    black_mage.equip(knife);
+    knight.equip(sword);
+    white_mage.equip(staff);
+    engineer.equip(axe);
+    thief.equip(bow);
+
+    /* Successful attack */
+    engineer.attack(knight);
+    assertEquals(knight.getHP(), 140);
+
+    /* Successful spell PARALYZE
+     * Paralysis status
+     * Failed attack due to paralysis, then successful attack */
+    knight.attack(white_mage);
+    white_mage.castSpell(knight, SpellClass.PARALYZE);
+    assertEquals(white_mage.getMana(), 75);
+    assertTrue(knight.isParalyzed());
+    knight.attack(white_mage);
+    assertFalse(knight.isParalyzed());
+    assertEquals(white_mage.getHP(), 10);
+
+    /* Failed spell due to wrong Weapon type */
+    black_mage.castSpell(engineer, SpellClass.THUNDER);
+    assertEquals(black_mage.getMana(), 100);
+    assertFalse(engineer.isParalyzed());
+    assertEquals(engineer.getHP(), 120);
+
+    /* Successful spell HEAL */
+    thief.attack(knight);
+    white_mage.castSpell(knight, SpellClass.HEAL);
+    assertEquals(white_mage.getMana(), 60);
+    assertEquals(knight.getHP(), 170);
+
+    /* Burn status
+     * Burn damage
+     * Burn purification */
+    engineer.getBurnt(staff.getMagicDamage());
+    assertTrue(engineer.isBurnt());
+    assertEquals(engineer.getBurnDamage(), 30);
+    engineer.applyStatusDamage();
+    engineer.getPurified(false, false, true);
+    assertEquals(engineer.getHP(), 90);
+
+    /* Successful spell POISON
+     * Poison status
+     * Poison damage
+     * Poison purification */
+    white_mage.castSpell(thief, SpellClass.POISON);
+    assertEquals(white_mage.getMana(), 20);
+    assertTrue(thief.isPoisoned());
+    assertEquals(thief.getPoisonDamage(), 20);
+    thief.applyStatusDamage();
+    thief.getPurified(true, false, false);
+    assertFalse(thief.isPoisoned());
+    assertEquals(thief.getHP(), 80);
+
+    /* Failed spell due not enough mana */
+    white_mage.castSpell(engineer, SpellClass.POISON);
+    assertEquals(white_mage.getMana(), 20);
+    assertEquals(engineer.getHP(), 90);
+    assertFalse(engineer.isPoisoned());
+    assertEquals(engineer.getPoisonDamage(), 0);
+
+    /* Mana refilled */
+    white_mage.refillMana();
+    assertEquals(white_mage.getMana(), 100);
+
+    /* Character dies */
+    engineer.attack(white_mage);
+    assertEquals(white_mage.getHP(), 0);
+    assertFalse(white_mage.isAlive());
+
+    /* Failed attack due to dead attacker
+    *  Failed spell due to dead caster */
+    white_mage.attack(thief);
+    white_mage.castSpell(thief, SpellClass.HEAL);
+    assertEquals(white_mage.getMana(), 100);
+    assertFalse(white_mage.isAlive());
+    assertEquals(thief.getHP(), 80);
+
+    /* Failed attack due to dead target
+    *  Failed spell due to dead target */
+    knight.attack(white_mage);
+    black_mage.castSpell(white_mage, SpellClass.FIRE);
+    assertEquals(black_mage.getMana(), 100);
+    assertEquals(white_mage.getHP(), 0);
+    assertFalse(white_mage.isBurnt());
+    assertEquals(white_mage.getBurnDamage(), 0);
+
+    /* Failed spell due to caster not being a mage */
+    knight.castSpell(engineer, SpellClass.HEAL);
+    assertEquals(engineer.getHP(), 90);
+
+    /* Failed attack due to null Weapon
+    *  Failed spell due to null Weapon */
+    black_mage.unequip();
+    assertNull(black_mage.getEquippedWeapon());
+    black_mage.attack(engineer);
+    black_mage.castSpell(engineer, SpellClass.FIRE);
+    assertEquals(engineer.getHP(), 90);
+    assertFalse(engineer.isBurnt());
+
+    /* Failed spell due to wrong kind of mage */
+    black_mage.equip(staff);
+    black_mage.castSpell(engineer, SpellClass.HEAL);
+    assertEquals(engineer.getHP(), 90);
+
+    /* Failed spell due to paralysis
+    *  Paralysis status
+    *  Paralysis purification */
+    black_mage.getParalyzed();
+    black_mage.castSpell(engineer, SpellClass.THUNDER);
+    assertFalse(engineer.isParalyzed());
+    assertEquals(engineer.getHP(), 90);
+    assertFalse(black_mage.isParalyzed());
+    black_mage.getParalyzed();
+    black_mage.getPurified(false, true, false);
+
+    /* Successful spell FIRE
+    *  Target got burnt
+    *  Note: (3.507e-47)% chance of failing due to RNG */
+    AbstractCharacter tank1 = new PlayerCharacter("Tank1", turns, CharacterClass.KNIGHT, 30000, 100, 100);
+    while(!tank1.isBurnt() && tank1.isAlive()){
+      int result = black_mage.castSpell(tank1, SpellClass.FIRE);
+      if(result == -8){
+        black_mage.refillMana();
+      }
+    }
+    assertTrue(tank1.isBurnt());
+    tank1.getPurified(false, false, true);
+    assertFalse(tank1.isBurnt());
+
+    /* Successful spell THUNDER
+     *  Target got paralyzed
+     *  Note: (3.540e-76)% chance of failing due to RNG */
+    AbstractCharacter tank2 = new PlayerCharacter("Tank2", turns, CharacterClass.KNIGHT, 30000, 100, 100);
+    while(!tank2.isParalyzed() && tank2.isAlive()){
+      int result = black_mage.castSpell(tank2, SpellClass.THUNDER);
+      if(result == -8){
+        black_mage.refillMana();
+      }
+    }
+    assertTrue(tank2.isParalyzed());
+    tank2.getPurified(false, true, false);
+    assertFalse(tank2.isParalyzed());
+
+    /* Dummy test to get 100% coverage */
+    assertNotEquals(sword, knight);
+  }
+
 }

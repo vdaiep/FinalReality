@@ -10,7 +10,7 @@ import com.github.cc3002.finalreality.model.weapon.Weapon;
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
- * @version 1.01
+ * @version 1.02
  * @since 1.0
  */
 public interface ICharacter {
@@ -68,8 +68,7 @@ public interface ICharacter {
   /**
    * Poisons this Character
    *
-   * @param poisonDamage
-   *    strength of the poisoning
+   * @param poisonDamage strength of the poisoning
    * @since 1.0
    */
   void getPoisoned(int poisonDamage);
@@ -84,8 +83,7 @@ public interface ICharacter {
   /**
    * Burns this Character
    *
-   * @param burnDamage
-   *    strength of the burning
+   * @param burnDamage strength of the burning
    * @since 1.01
    */
   void getBurnt(int burnDamage);
@@ -100,13 +98,12 @@ public interface ICharacter {
   /**
    * Attacks another Character
    *
-   * @param that
-   *    Character to be attacked.
-   * @return   0 if successful,
-   *          -1 if failed because 'this' is not alive,
-   *          -2 if failed because 'that' is not alive,
-   *          -3 if failed because 'this' has no equipped weapon,
-   *          -9 if successful but couldn't attack due to paralysis.
+   * @param that Character to be attacked.
+   * @return 0 if successful,
+   * -1 if failed because 'this' is not alive,
+   * -2 if failed because 'that' is not alive,
+   * -3 if failed because 'this' has no equipped weapon,
+   * -9 if successful but couldn't attack due to paralysis.
    * @since 1.01
    */
   int attack(AbstractCharacter that);
@@ -114,17 +111,16 @@ public interface ICharacter {
   /**
    * Casts a spell on another Character
    *
-   * @param that
-   *    Character to cast the spell on.
-   * @return   0 if successful,
-   *          -1 if failed because 'this' has 0 HP,
-   *          -2 if failed because 'that' has 0 HP,
-   *          -3 if failed because 'this' has no equipped weapon,
-   *          -4 if failed because 'this' is not a mage,
-   *          -5 if failed because 'this' has equipped a non-magical weapon,
-   *          -6 if failed because 'this' kind of mage can not use this spell,
-   *          -7 if failed because 'this' has not enough mana to cast this spell,
-   *          -9 if successful but couldn't use spell due to paralysis.
+   * @param that Character to cast the spell on.
+   * @return 0 if successful,
+   * -1 if failed because 'this' has 0 HP,
+   * -2 if failed because 'that' has 0 HP,
+   * -3 if failed because 'this' has no equipped weapon,
+   * -4 if failed because 'this' is not a mage,
+   * -5 if failed because 'this' has equipped a non-magical weapon,
+   * -6 if failed because 'this' kind of mage can not use this spell,
+   * -7 if failed because 'this' has not enough mana to cast this spell,
+   * -9 if successful but couldn't use spell due to paralysis.
    * @since 1.01
    */
   int castSpell(AbstractCharacter that, SpellClass spell);
@@ -134,7 +130,14 @@ public interface ICharacter {
    *
    * @since 1.01
    */
-  void equip(Weapon weapon);
+  int equip(Weapon weapon);
+
+  /**
+   * Removes this Character's equipped Weapon.
+   *
+   * @since 1.02
+   */
+  void unequip();
 
   /**
    * Return this character's equipped weapon.
@@ -149,4 +152,59 @@ public interface ICharacter {
    * @since 1.0
    */
   CharacterClass getCharacterClass();
+
+  /**
+   * Checks if Character is alive
+   *
+   * @return 'alive' parameter
+   * @since 1.02
+   */
+  boolean isAlive();
+
+  /**
+   * Checks if Character is poisoned
+   *
+   * @return 'poisoned' parameter
+   * @since 1.02
+   */
+  boolean isPoisoned();
+
+  /**
+   * Gets the current poisoning damage this Character is receiving
+   *
+   * @return 'poisonDamage' parameter
+   * @since 1.02
+   */
+  int getPoisonDamage();
+
+  /**
+   * Checks if Character is paralyzed
+   *
+   * @return 'paralyzed' parameter
+   * @since 1.02
+   */
+  boolean isParalyzed();
+
+  /**
+   * Checks if Character is burnt
+   *
+   * @return 'burnt' parameter
+   * @since 1.02
+   */
+  boolean isBurnt();
+
+  /**
+   * Gets the current burning damage this Character is receiving
+   *
+   * @return 'poisonDamage' parameter
+   * @since 1.02
+   */
+  int getBurnDamage();
+
+  /**
+   * Refills this Character's mana
+   *
+   * @since 1.02
+   */
+  void refillMana();
 }

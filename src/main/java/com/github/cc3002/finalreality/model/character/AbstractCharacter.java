@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla
- * @version 1.01
+ * @version 1.02
  * @since 1.0
  */
 public abstract class AbstractCharacter implements ICharacter {
@@ -44,11 +44,6 @@ public abstract class AbstractCharacter implements ICharacter {
    * Character's current HP
    */
   private int HP;
-
-  /**
-   * Indicates if this Character is alive or not
-   */
-  private boolean alive = this.HP > 0;
 
   /**
    * Character's maximum mana (set to 0 if not mage)
@@ -144,7 +139,7 @@ public abstract class AbstractCharacter implements ICharacter {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
     if (this instanceof PlayerCharacter) {
       scheduledExecutor
-          .schedule(this::addToQueue, equippedWeapon.getWeight() / 10, TimeUnit.SECONDS);
+          .schedule(this::addToQueue, getEquippedWeapon().getWeight() / 10, TimeUnit.SECONDS);
     } else {
       var enemy = (Enemy) this;
       scheduledExecutor
@@ -161,8 +156,10 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   @Override
   public void getPoisoned(int poisonDamage){
-    this.poisoned = true;
-    this.poisonDamage = this.poisonDamage + poisonDamage;
+    if(poisonDamage > 0) {
+      this.poisoned = true;
+      this.poisonDamage = this.poisonDamage + poisonDamage/3;
+    }
   }
 
   /**
@@ -184,8 +181,24 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   @Override
   public void getBurnt(int burnDamage){
-    this.burnt = true;
-    this.burnDamage = this.burnDamage + burnDamage;
+    if(burnDamage > 0) {
+      this.burnt = true;
+      this.burnDamage = this.burnDamage + burnDamage/2;
+    }
+  }
+
+  public void getPurified(boolean poison, boolean paralysis, boolean burn){
+    if(poison){
+      this.poisoned = false;
+      this.poisonDamage = 0;
+    }
+    if(paralysis){
+      this.paralyzed = false;
+    }
+    if(burn){
+      this.burnt = false;
+      this.burnDamage = 0;
+    }
   }
 
   /**
@@ -195,11 +208,11 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   @Override
   public void applyStatusDamage() {
-    if (this.burnt) {
-      this.HP = Math.max(this.HP - this.burnDamage / 2, 0);
+    if (this.isBurnt()) {
+      this.HP = Math.max(this.getHP() - this.getBurnDamage(), 0);
     }
-    if (this.poisoned) {
-      this.HP = Math.max(this.HP - this.poisonDamage / 3, 0);
+    if (this.isPoisoned()) {
+      this.HP = Math.max(this.getHP() - this.getPoisonDamage(), 0);
     }
   }
 
@@ -227,21 +240,21 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   @Override
   public int attack(AbstractCharacter that){
-    if(!this.alive){
+    if(!this.isAlive()){
       return -1;
     }
-    if(!that.alive){
+    if(!that.isAlive()){
       return -2;
     }
     if(this.getEquippedWeapon() == null){
       return -3;
     }
-    if(this.paralyzed){
+    if(this.isParalyzed()){
       this.paralyzed = false;
       return -9;
     }
     int damage = Math.max(this.getEquippedWeapon().getDamage() - that.getDefense(), 0);
-    that.HP = Math.max(that.HP - damage, 0);
+    that.HP = Math.max(that.getHP() - damage, 0);
     return 0;
   }
 
@@ -251,41 +264,45 @@ public abstract class AbstractCharacter implements ICharacter {
    * @param that
    *    Character to cast the spell on.
    * @return   0 if successful,
-   *          -1 if failed because 'this' has 0 HP,
-   *          -2 if failed because 'that' has 0 HP,
-   *          -3 if failed because 'this' has no equipped weapon,
-   *          -4 if failed because 'this' is not a mage,
-   *          -5 if failed because 'this' has equipped a non-magical weapon,
-   *          -6 if failed because 'this' kind of mage can not use this spell,
-   *          -7 if failed because 'this' has not enough mana to cast this spell,
+   *          -1 if failed because 'this' is not alive,
+   *          -2 if failed because 'that' is not alive,
+   *          -3 if failed because 'this' is an Enemy (should never happen),
+   *          -4 if failed because 'this' has no equipped weapon,
+   *          -5 if failed because 'this' is not a mage,
+   *          -6 if failed because 'this' has equipped a non-magical weapon,
+   *          -7 if failed because 'this' kind of mage can not use this spell,
+   *          -8 if failed because 'this' has not enough mana to cast this spell,
    *          -9 if successful but couldn't use spell due to paralysis.
    * @since 1.01
    */
   @Override
   public int castSpell(AbstractCharacter that, SpellClass spell){
-    if(!this.alive){
+    if(!this.isAlive()){
       return -1;
     }
-    if(!that.alive){
+    if(!that.isAlive()){
       return -2;
     }
-    if(this.getEquippedWeapon() == null){
+    if(this.getCharacterClass() == CharacterClass.ENEMY){
       return -3;
     }
-    if(!this.characterClass.isMage){
+    if(this.getEquippedWeapon() == null){
       return -4;
     }
-    if(!this.getEquippedWeapon().getType().isMagical){
+    if(!this.getCharacterClass().isMage){
       return -5;
     }
-    if(!this.characterClass.equals(spell.type)){
+    if(!this.getEquippedWeapon().getType().isMagical){
       return -6;
     }
-    if(this.getMana() < spell.manaCost){
+    if(!this.getCharacterClass().equals(spell.type)){
       return -7;
     }
-    if(this.paralyzed){
-      this.paralyzed = false;
+    if(this.getMana() < spell.manaCost){
+      return -8;
+    }
+    if(this.isParalyzed()){
+      this.getPurified(false, true, false);
       return -9;
     }
     this.mana = Math.max(this.getMana() - spell.manaCost, 0);
@@ -307,19 +324,36 @@ public abstract class AbstractCharacter implements ICharacter {
     return 0;
   }
 
-
   /**
    * Equips a weapon to this Character, modifying the 'equippedWeapon' parameter
    *
    * @param weapon
    *    Weapon to equip
+   * @return 0 if successful,
+   *        -1 if failed due to Character being an Enemy,
+   *        -2 if failed due to this Character being unable to equip this Weapon type
    * @since 1.0
    */
   @Override
-  public void equip(Weapon weapon) {
+  public int equip(Weapon weapon) {
     if (this instanceof PlayerCharacter) {
-      this.equippedWeapon = weapon;
+      if(weapon.getType().usage.get(this.getCharacterClass()) == Boolean.TRUE){
+        this.equippedWeapon = weapon;
+        return 0;
+      }
+      return -2;
     }
+    return -1;
+  }
+
+  /**
+   * Removes this Character's equipped Weapon
+   *
+   * @since 1.02
+   */
+  @Override
+  public void unequip(){
+    this.equippedWeapon = null;
   }
 
   /**
@@ -408,4 +442,81 @@ public abstract class AbstractCharacter implements ICharacter {
   public int getMana() {
     return mana;
   }
+
+  /**
+   * Checks if Character is alive
+   *
+   * @return true if HP > 0, false otherwise
+   * @since 1.02
+   */
+  @Override
+  public boolean isAlive(){
+    return this.getHP() > 0;
+  }
+
+  /**
+   * Checks if Character is poisoned
+   *
+   * @return 'poisoned' parameter
+   * @since 1.02
+   */
+  @Override
+  public boolean isPoisoned(){
+    return this.poisoned;
+  }
+
+  /**
+   * Gets the current poisoning damage this Character is receiving
+   *
+   * @return 'poisonDamage' parameter
+   * @since 1.02
+   */
+  @Override
+  public int getPoisonDamage(){
+    return this.poisonDamage;
+  }
+
+  /**
+   * Checks if Character is paralyzed
+   *
+   * @return 'paralyzed' parameter
+   * @since 1.02
+   */
+  @Override
+  public boolean isParalyzed(){
+    return this.paralyzed;
+  }
+
+  /**
+   * Checks if Character is burnt
+   *
+   * @return 'burnt' parameter
+   * @since 1.02
+   */
+  @Override
+  public boolean isBurnt(){
+    return this.burnt;
+  }
+
+  /**
+   * Gets the current burning damage this Character is receiving
+   *
+   * @return 'poisonDamage' parameter
+   * @since 1.02
+   */
+  @Override
+  public int getBurnDamage(){
+    return this.burnDamage;
+  }
+
+  /**
+   * Refills this Character's mana
+   *
+   * @since 1.02
+   */
+  @Override
+  public void refillMana(){
+    this.mana = this.getMaxMana();
+  }
+
 }
