@@ -21,6 +21,11 @@ public class Enemy extends AbstractCharacter {
   private final int weight;
 
   /**
+   * How much damage this Enemy's attacks deal
+   */
+  private final int attackDamage;
+
+  /**
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
    * play.
    *
@@ -37,11 +42,12 @@ public class Enemy extends AbstractCharacter {
    *
    * @since 1.0
    */
-  public Enemy(@NotNull final String name, final int weight,
+  public Enemy(@NotNull final String name, final int weight, final int attackDamage,
       @NotNull final BlockingQueue<ICharacter> turnsQueue, int maxHP,
                int defense) {
     super(turnsQueue, name, CharacterClass.ENEMY, maxHP, defense, 0);
     this.weight = weight;
+    this.attackDamage = attackDamage;
   }
 
   /**
@@ -51,7 +57,43 @@ public class Enemy extends AbstractCharacter {
    * @since 1.0
    */
   public int getWeight() {
-    return weight;
+    return this.weight;
+  }
+
+  /**
+   * Returns the damage this Enemy's attacks deal
+   *
+   * @return 'attackDamage' parameter
+   */
+  public int getAttackDamage() {
+    return this.attackDamage;
+  }
+
+  /**
+   * Attacks another Character
+   *
+   * @param that
+   *    Character to be attacked.
+   * @return   0 if successful,
+   *          -1 if failed because 'this' is not alive,
+   *          -2 if failed because 'that' is not alive,
+   *          -9 if successful but couldn't attack due to paralysis.
+   * @since 1.01
+   */
+  public int attack(AbstractCharacter that){
+    if(!this.isAlive()){
+      return -1;
+    }
+    if(!that.isAlive()){
+      return -2;
+    }
+    if(this.isParalyzed()){
+      this.getPurified(false, true, false);
+      return -9;
+    }
+    int damage = this.getAttackDamage();
+    that.receiveDamage(damage, false);
+    return 0;
   }
 
   /**

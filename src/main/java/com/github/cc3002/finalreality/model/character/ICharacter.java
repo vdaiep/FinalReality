@@ -24,46 +24,38 @@ public interface ICharacter {
   void waitTurn();
 
   /**
-   * Returns this character's name.
+   * Receives damage from another Character
    *
-   * @since 1.0
+   * @param damage
+   *    amount of damage to be received
+   * @since 1.02
    */
-  String getName();
+  void receiveDamage(int damage, boolean true_damage);
 
   /**
-   * Returns this character's maximum HP.
+   * Receives healing from another Character
    *
-   * @since 1.0
+   * @param healing
+   *    amount of healing to be received
+   * @since 1.02
    */
-  int getMaxHP();
+  void receiveHealing(int healing);
 
   /**
-   * Returns this character's current HP.
+   * Spends this Character mana
    *
-   * @since 1.0
+   * @param mana
+   *    mana to be spent
+   * @since 1.02
    */
-  int getHP();
+  void spendMana(int mana);
 
   /**
-   * Returns this character's defense.
+   * Refills this Character's mana
    *
-   * @since 1.0
+   * @since 1.02
    */
-  int getDefense();
-
-  /**
-   * Returns this character's maximum mana.
-   *
-   * @since 1.0
-   */
-  int getMaxMana();
-
-  /**
-   * Returns this character's current mana.
-   *
-   * @since 1.0
-   */
-  int getMana();
+  void refillMana(int mana);
 
   /**
    * Poisons this Character
@@ -87,6 +79,18 @@ public interface ICharacter {
    * @since 1.01
    */
   void getBurnt(int burnDamage);
+
+  /**
+   * Clears adverse effects on this Character
+   *
+   * @param poison
+   *    clear poison?
+   * @param paralysis
+   *    clear paralysis?
+   * @param burn
+   *    clear burn?
+   */
+  void getPurified(boolean poison, boolean paralysis, boolean burn);
 
   /**
    * Applies burn and poison effects.
@@ -147,11 +151,53 @@ public interface ICharacter {
   Weapon getEquippedWeapon();
 
   /**
+   * Returns this character's name.
+   *
+   * @since 1.0
+   */
+  String getName();
+
+  /**
    * Returns this character's class.
    *
    * @since 1.0
    */
   CharacterClass getCharacterClass();
+
+  /**
+   * Returns this character's maximum HP.
+   *
+   * @since 1.0
+   */
+  int getMaxHP();
+
+  /**
+   * Returns this character's current HP.
+   *
+   * @since 1.0
+   */
+  int getHP();
+
+  /**
+   * Returns this character's defense.
+   *
+   * @since 1.0
+   */
+  int getDefense();
+
+  /**
+   * Returns this character's maximum mana.
+   *
+   * @since 1.0
+   */
+  int getMaxMana();
+
+  /**
+   * Returns this character's current mana.
+   *
+   * @since 1.0
+   */
+  int getMana();
 
   /**
    * Checks if Character is alive
@@ -191,7 +237,7 @@ public interface ICharacter {
    * @return 'burnt' parameter
    * @since 1.02
    */
-  boolean isBurnt();
+  boolean isBurned();
 
   /**
    * Gets the current burning damage this Character is receiving
@@ -201,10 +247,4 @@ public interface ICharacter {
    */
   int getBurnDamage();
 
-  /**
-   * Refills this Character's mana
-   *
-   * @since 1.02
-   */
-  void refillMana();
 }

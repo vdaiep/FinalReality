@@ -20,6 +20,9 @@ import org.junit.jupiter.api.Test;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  * @see ICharacter
+ *
+ * @version 1.02
+ * @since 1.0
  */
 public abstract class AbstractCharacterTest {
 
@@ -28,14 +31,16 @@ public abstract class AbstractCharacterTest {
   protected List<Weapon> testWeapons;
 
   /**
-   * Checks that the character waits the appropriate amount of time for it's turn.
+   * Checks that the character waits the appropriate amount of time for it's turn
+   *
+   * @since 1.0
    */
   @Test
   void waitTurnTest() {
     Assertions.assertTrue(turns.isEmpty());
     AbstractCharacter character = new PlayerCharacter("Darius", turns, CharacterClass.KNIGHT, 100, 20, 20);
     Weapon weapon = new Weapon("BF Sword", 30, 0, 10, WeaponType.SWORD);
-    tryToEquip(character, weapon);
+    character.equip(weapon);
     character.waitTurn();
     try {
       // Thread.sleep is not accurate so this values may be changed to adjust the
@@ -51,10 +56,11 @@ public abstract class AbstractCharacterTest {
     }
   }
 
-  private void tryToEquip(ICharacter character, Weapon weapon) {
-    character.equip(weapon);
-  }
-
+  /**
+   * Checks that the class' constructor and equals method work properly
+   *
+   * @since 1.0
+   */
   protected void checkConstruction(final ICharacter expectedCharacter,
       final ICharacter testEqualCharacter,
       final ICharacter sameClassDifferentCharacter,
@@ -64,7 +70,11 @@ public abstract class AbstractCharacterTest {
     assertNotEquals(testEqualCharacter, differentClassCharacter);
     assertEquals(expectedCharacter.hashCode(), testEqualCharacter.hashCode());
   }
-
+  /**
+   * Setup method. Declares turns queue and test lists
+   *
+   * @since 1.02
+   */
   protected void basicSetUp() {
     turns = new LinkedBlockingQueue<>();
     testWeapons = new ArrayList<>();

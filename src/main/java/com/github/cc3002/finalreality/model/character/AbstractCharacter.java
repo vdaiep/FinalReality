@@ -130,6 +130,16 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   /**
+   * Adds this character to the turns queue.
+   *
+   * @since 1.0
+   */
+  private void addToQueue() {
+    turnsQueue.add(this);
+    scheduledExecutor.shutdown();
+  }
+
+  /**
    * Waits for this Character's turn
    *
    * @since 1.0
@@ -145,6 +155,59 @@ public abstract class AbstractCharacter implements ICharacter {
       scheduledExecutor
           .schedule(this::addToQueue, enemy.getWeight() / 10, TimeUnit.SECONDS);
     }
+  }
+
+  /**
+   * Receives damage from another Character
+   *
+   * @param damage
+   *    amount of damage to be received
+   * @since 1.02
+   */
+  @Override
+  public void receiveDamage(int damage, boolean true_damage){
+    int defense;
+    if(true_damage){
+      defense = 0;
+    }
+    else{
+      defense = this.getDefense();
+    }
+    this.HP = Math.max(this.getHP() - Math.max(damage - defense, 0), 0);
+  }
+
+  /**
+   * Receives healing from another Character
+   *
+   * @param healing
+   *    amount of healing to be received
+   * @since 1.02
+   */
+  @Override
+  public void receiveHealing(int healing){
+    this.HP = Math.min(this.getHP() + healing , this.getMaxHP());
+  }
+
+  /**
+   * Spends this Character mana
+   *
+   * @param mana
+   *    mana to be spent
+   * @since 1.02
+   */
+  @Override
+  public void spendMana(int mana){
+    this.mana = Math.max(this.getMana() - mana, 0);
+  }
+
+  /**
+   * Refills this Character's mana
+   *
+   * @since 1.02
+   */
+  @Override
+  public void refillMana(int mana){
+    this.mana = Math.min(this.getMana() + mana, this.getMaxMana());
   }
 
   /**
@@ -187,6 +250,17 @@ public abstract class AbstractCharacter implements ICharacter {
     }
   }
 
+  /**
+   * Clears adverse effects on this Character
+   *
+   * @param poison
+   *    clear poison?
+   * @param paralysis
+   *    clear paralysis?
+   * @param burn
+   *    clear burn?
+   */
+  @Override
   public void getPurified(boolean poison, boolean paralysis, boolean burn){
     if(poison){
       this.poisoned = false;
@@ -208,34 +282,25 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   @Override
   public void applyStatusDamage() {
-    if (this.isBurnt()) {
-      this.HP = Math.max(this.getHP() - this.getBurnDamage(), 0);
+    if (this.isBurned()) {
+      this.receiveDamage(this.getBurnDamage(), true);
     }
     if (this.isPoisoned()) {
-      this.HP = Math.max(this.getHP() - this.getPoisonDamage(), 0);
+      this.receiveDamage(this.getPoisonDamage(), true);
     }
-  }
-
-  /**
-   * Adds this character to the turns queue.
-   *
-   * @since 1.0
-   */
-  private void addToQueue() {
-    turnsQueue.add(this);
-    scheduledExecutor.shutdown();
   }
 
   /**
    * Attacks another Character
    *
    * @param that
-   *    Character to be attacked.
-   * @return   0 if successful,
-   *          -1 if failed because 'this' is not alive,
-   *          -2 if failed because 'that' is not alive,
-   *          -3 if failed because 'this' has no equipped weapon,
-   *          -9 if successful but couldn't attack due to paralysis.
+   *    Character to be attacked
+   * @return   0 if successful
+   *          -1 if failed because 'this' is not alive
+   *          -2 if failed because 'that' is not alive
+   *          -4 if failed because 'this' has no equipped weapon
+   *          -9 if successful but couldn't attack due to paralysis
+   *          -10 if failed because 'this' is attacking itself
    * @since 1.01
    */
   @Override
@@ -247,14 +312,16 @@ public abstract class AbstractCharacter implements ICharacter {
       return -2;
     }
     if(this.getEquippedWeapon() == null){
-      return -3;
+      return -4;
     }
     if(this.isParalyzed()){
-      this.paralyzed = false;
+      this.getPurified(false, true, false);
       return -9;
     }
-    int damage = Math.max(this.getEquippedWeapon().getDamage() - that.getDefense(), 0);
-    that.HP = Math.max(that.getHP() - damage, 0);
+    if(that.equals(this)){
+      return -10;
+    }
+    that.receiveDamage(this.getEquippedWeapon().getDamage(), false);
     return 0;
   }
 
@@ -262,17 +329,18 @@ public abstract class AbstractCharacter implements ICharacter {
    * Casts a spell on another Character
    *
    * @param that
-   *    Character to cast the spell on.
-   * @return   0 if successful,
-   *          -1 if failed because 'this' is not alive,
-   *          -2 if failed because 'that' is not alive,
-   *          -3 if failed because 'this' is an Enemy (should never happen),
-   *          -4 if failed because 'this' has no equipped weapon,
-   *          -5 if failed because 'this' is not a mage,
-   *          -6 if failed because 'this' has equipped a non-magical weapon,
-   *          -7 if failed because 'this' kind of mage can not use this spell,
-   *          -8 if failed because 'this' has not enough mana to cast this spell,
-   *          -9 if successful but couldn't use spell due to paralysis.
+   *    Character to cast the spell on
+   * @return   0 if successful
+   *          -1 if failed because 'this' is not alive
+   *          -2 if failed because 'that' is not alive
+   *          -3 if failed because 'this' is an Enemy (should never happen)
+   *          -4 if failed because 'this' has no equipped weapon
+   *          -5 if failed because 'this' is not a mage
+   *          -6 if failed because 'this' has equipped a non-magical weapon
+   *          -7 if failed because 'this' kind of mage can not use this spell
+   *          -8 if failed because 'this' has not enough mana to cast this spell
+   *          -9 if successful but couldn't use spell due to paralysis
+   *          -10 if failed because 'this' is casting the spell on itself
    * @since 1.01
    */
   @Override
@@ -305,12 +373,15 @@ public abstract class AbstractCharacter implements ICharacter {
       this.getPurified(false, true, false);
       return -9;
     }
-    this.mana = Math.max(this.getMana() - spell.manaCost, 0);
+    if(that.equals(this)){
+      return -10;
+    }
+    this.spendMana(spell.manaCost);
     int damage = this.getEquippedWeapon().getMagicDamage();
-    int damageDealt = (int) Math.round(damage*spell.damageRatio);
+    int damageDealt = (int) Math.round(this.getEquippedWeapon().getMagicDamage()*spell.damageRatio);
     int healApplied = (int) Math.round(that.getMaxHP()*spell.healRatio);
-    that.HP = Math.max(that.getHP() - damageDealt, 0);
-    that.HP = Math.min(that.getHP() + healApplied, that.getMaxHP());
+    that.receiveDamage(damageDealt, true);
+    that.receiveHealing(healApplied);
     double random = Math.random();
     if(random < spell.poisonProbability){
       that.getPoisoned(damage);
@@ -494,7 +565,7 @@ public abstract class AbstractCharacter implements ICharacter {
    * @since 1.02
    */
   @Override
-  public boolean isBurnt(){
+  public boolean isBurned(){
     return this.burnt;
   }
 
@@ -507,16 +578,6 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public int getBurnDamage(){
     return this.burnDamage;
-  }
-
-  /**
-   * Refills this Character's mana
-   *
-   * @since 1.02
-   */
-  @Override
-  public void refillMana(){
-    this.mana = this.getMaxMana();
   }
 
 }

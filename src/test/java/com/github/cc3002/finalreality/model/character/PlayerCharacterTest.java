@@ -18,11 +18,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Set of tests for the {@code GameCharacter} class.
+ * Set of tests for the {@code PlayerCharacter} class.
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  * @see PlayerCharacter
+ *
+ * @version 1.02
+ * @since 1.0
  */
 class PlayerCharacterTest extends AbstractCharacterTest {
 
@@ -45,6 +48,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
    * Setup method.
    * Creates test Characters and Weapons
    *
+   * @since 1.02
    */
   @BeforeEach
   void setUp() {
@@ -194,10 +198,12 @@ class PlayerCharacterTest extends AbstractCharacterTest {
 
   /**
    * Checks that the class' constructor and equals method work properly.
+   *
+   * @since 1.02
    */
   @Test
   void constructorTest() {
-    var enemy = new Enemy("Enemy", 10, turns, 100, 20);
+    var enemy = new Enemy("Enemy", 10, 25, turns, 100, 20);
     for (var character :
         testCharacters) {
       var characterClass = character.getCharacterClass();
@@ -220,6 +226,11 @@ class PlayerCharacterTest extends AbstractCharacterTest {
 
   }
 
+  /**
+   * Checks that the weapon equipment process works correctly with each kind of Character and Weapon
+   *
+   * @since 1.02
+   */
   @Test
   void equipWeaponTest() {
     for (var character : testCharacters) {
@@ -300,6 +311,11 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     }
   }
 
+  /**
+   * Checks if Characters' and Weapons' stats interact properly
+   *
+   * @since 1.02
+   */
   @Test
   void interactionsTest() {
     /* Local set-up */
@@ -319,23 +335,49 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     engineer.equip(axe);
     thief.equip(bow);
 
+    /* Non-mages should have no mana */
+    assertEquals(knight.getMaxMana(), 0);
+    assertEquals(engineer.getMaxMana(), 0);
+    assertEquals(thief.getMaxMana(), 0);
+    assertEquals(knight.getMana(), 0);
+    assertEquals(engineer.getMana(), 0);
+    assertEquals(thief.getMana(), 0);
+
+    /* Non-magical Weapons should have no magic damage */
+    assertEquals(sword.getMagicDamage(), 0);
+    assertEquals(axe.getMagicDamage(), 0);
+    assertEquals(knife.getMagicDamage(), 0);
+    assertEquals(bow.getMagicDamage(), 0);
+
+    /* Failed attack due to Character attacking itself
+    *  Failed spell due to Character casting spell on itself */
+    int atk10 = knight.attack(knight);
+    assertEquals(atk10, -10);
+    assertEquals(knight.getHP(), knight.getMaxHP());
+    int sp10 = white_mage.castSpell(white_mage, SpellClass.HEAL);
+    assertEquals(sp10, -10);
+
     /* Successful attack */
-    engineer.attack(knight);
+    int atk0 = engineer.attack(knight);
+    assertEquals(atk0, 0);
     assertEquals(knight.getHP(), 140);
 
     /* Successful spell PARALYZE
      * Paralysis status
      * Failed attack due to paralysis, then successful attack */
     knight.attack(white_mage);
-    white_mage.castSpell(knight, SpellClass.PARALYZE);
+    int sp0 = white_mage.castSpell(knight, SpellClass.PARALYZE);
+    assertEquals(sp0, 0);
     assertEquals(white_mage.getMana(), 75);
     assertTrue(knight.isParalyzed());
-    knight.attack(white_mage);
+    int atk9 = knight.attack(white_mage);
+    assertEquals(atk9, -9);
     assertFalse(knight.isParalyzed());
     assertEquals(white_mage.getHP(), 10);
 
     /* Failed spell due to wrong Weapon type */
-    black_mage.castSpell(engineer, SpellClass.THUNDER);
+    int sp6 = black_mage.castSpell(engineer, SpellClass.THUNDER);
+    assertEquals(sp6, -6);
     assertEquals(black_mage.getMana(), 100);
     assertFalse(engineer.isParalyzed());
     assertEquals(engineer.getHP(), 120);
@@ -350,7 +392,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
      * Burn damage
      * Burn purification */
     engineer.getBurnt(staff.getMagicDamage());
-    assertTrue(engineer.isBurnt());
+    assertTrue(engineer.isBurned());
     assertEquals(engineer.getBurnDamage(), 30);
     engineer.applyStatusDamage();
     engineer.getPurified(false, false, true);
@@ -370,14 +412,15 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     assertEquals(thief.getHP(), 80);
 
     /* Failed spell due not enough mana */
-    white_mage.castSpell(engineer, SpellClass.POISON);
+    int sp8 = white_mage.castSpell(engineer, SpellClass.POISON);
+    assertEquals(sp8, -8);
     assertEquals(white_mage.getMana(), 20);
     assertEquals(engineer.getHP(), 90);
     assertFalse(engineer.isPoisoned());
     assertEquals(engineer.getPoisonDamage(), 0);
 
     /* Mana refilled */
-    white_mage.refillMana();
+    white_mage.refillMana(99999);
     assertEquals(white_mage.getMana(), 100);
 
     /* Character dies */
@@ -387,44 +430,53 @@ class PlayerCharacterTest extends AbstractCharacterTest {
 
     /* Failed attack due to dead attacker
     *  Failed spell due to dead caster */
-    white_mage.attack(thief);
-    white_mage.castSpell(thief, SpellClass.HEAL);
+    int atk1 = white_mage.attack(thief);
+    assertEquals(atk1, -1);
+    int sp1 = white_mage.castSpell(thief, SpellClass.HEAL);
+    assertEquals(sp1, -1);
     assertEquals(white_mage.getMana(), 100);
     assertFalse(white_mage.isAlive());
     assertEquals(thief.getHP(), 80);
 
     /* Failed attack due to dead target
     *  Failed spell due to dead target */
-    knight.attack(white_mage);
-    black_mage.castSpell(white_mage, SpellClass.FIRE);
+    int atk2 = knight.attack(white_mage);
+    assertEquals(atk2, -2);
+    int sp2 = black_mage.castSpell(white_mage, SpellClass.FIRE);
+    assertEquals(sp2, -2);
     assertEquals(black_mage.getMana(), 100);
     assertEquals(white_mage.getHP(), 0);
-    assertFalse(white_mage.isBurnt());
+    assertFalse(white_mage.isBurned());
     assertEquals(white_mage.getBurnDamage(), 0);
 
     /* Failed spell due to caster not being a mage */
-    knight.castSpell(engineer, SpellClass.HEAL);
+    int sp5 = knight.castSpell(engineer, SpellClass.HEAL);
+    assertEquals(sp5, -5);
     assertEquals(engineer.getHP(), 90);
 
     /* Failed attack due to null Weapon
     *  Failed spell due to null Weapon */
     black_mage.unequip();
     assertNull(black_mage.getEquippedWeapon());
-    black_mage.attack(engineer);
-    black_mage.castSpell(engineer, SpellClass.FIRE);
+    int atk4 = black_mage.attack(engineer);
+    assertEquals(atk4, -4);
+    int sp4 = black_mage.castSpell(engineer, SpellClass.FIRE);
+    assertEquals(sp4, -4);
     assertEquals(engineer.getHP(), 90);
-    assertFalse(engineer.isBurnt());
+    assertFalse(engineer.isBurned());
 
     /* Failed spell due to wrong kind of mage */
     black_mage.equip(staff);
-    black_mage.castSpell(engineer, SpellClass.HEAL);
+    int sp7 = black_mage.castSpell(engineer, SpellClass.HEAL);
+    assertEquals(sp7, -7);
     assertEquals(engineer.getHP(), 90);
 
     /* Failed spell due to paralysis
     *  Paralysis status
     *  Paralysis purification */
     black_mage.getParalyzed();
-    black_mage.castSpell(engineer, SpellClass.THUNDER);
+    int sp9 = black_mage.castSpell(engineer, SpellClass.THUNDER);
+    assertEquals(sp9, -9);
     assertFalse(engineer.isParalyzed());
     assertEquals(engineer.getHP(), 90);
     assertFalse(black_mage.isParalyzed());
@@ -435,15 +487,15 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     *  Target got burnt
     *  Note: (3.507e-47)% chance of failing due to RNG */
     AbstractCharacter tank1 = new PlayerCharacter("Tank1", turns, CharacterClass.KNIGHT, 30000, 100, 100);
-    while(!tank1.isBurnt() && tank1.isAlive()){
+    while(!tank1.isBurned() && tank1.isAlive()){
       int result = black_mage.castSpell(tank1, SpellClass.FIRE);
       if(result == -8){
-        black_mage.refillMana();
+        black_mage.refillMana(99999);
       }
     }
-    assertTrue(tank1.isBurnt());
+    assertTrue(tank1.isBurned());
     tank1.getPurified(false, false, true);
-    assertFalse(tank1.isBurnt());
+    assertFalse(tank1.isBurned());
 
     /* Successful spell THUNDER
      *  Target got paralyzed
@@ -452,14 +504,14 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     while(!tank2.isParalyzed() && tank2.isAlive()){
       int result = black_mage.castSpell(tank2, SpellClass.THUNDER);
       if(result == -8){
-        black_mage.refillMana();
+        black_mage.refillMana(99999);
       }
     }
     assertTrue(tank2.isParalyzed());
     tank2.getPurified(false, true, false);
     assertFalse(tank2.isParalyzed());
 
-    /* Dummy test to get 100% coverage */
+    /* Stupid test to get 100% coverage */
     assertNotEquals(sword, knight);
   }
 
