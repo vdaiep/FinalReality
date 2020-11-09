@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
+import com.github.cc3002.finalreality.model.character.player.AbstractPlayerCharacter;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
- * @see PlayerCharacter
+ * @see AbstractPlayerCharacter
  *
  * @version 1.02
  * @since 1.0
@@ -150,7 +150,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     characterManas.put(CharacterClass.ENGINEER, 100);
     characterManas.put(CharacterClass.THIEF, 100);
 
-    testCharacters.add(new PlayerCharacter(
+    testCharacters.add(new AbstractPlayerCharacter(
             characterNames.get(CharacterClass.BLACK_MAGE),
             turns,
             CharacterClass.BLACK_MAGE,
@@ -159,7 +159,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
             characterManas.get(CharacterClass.BLACK_MAGE)
     ));
 
-    testCharacters.add(new PlayerCharacter(
+    testCharacters.add(new AbstractPlayerCharacter(
             characterNames.get(CharacterClass.KNIGHT),
             turns,
             CharacterClass.KNIGHT,
@@ -168,7 +168,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
             characterManas.get(CharacterClass.KNIGHT)
     ));
 
-    testCharacters.add(new PlayerCharacter(
+    testCharacters.add(new AbstractPlayerCharacter(
             characterNames.get(CharacterClass.WHITE_MAGE),
             turns,
             CharacterClass.WHITE_MAGE,
@@ -177,7 +177,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
             characterManas.get(CharacterClass.WHITE_MAGE)
     ));
 
-    testCharacters.add(new PlayerCharacter(
+    testCharacters.add(new AbstractPlayerCharacter(
             characterNames.get(CharacterClass.ENGINEER),
             turns,
             CharacterClass.ENGINEER,
@@ -186,7 +186,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
             characterManas.get(CharacterClass.ENGINEER)
     ));
 
-    testCharacters.add(new PlayerCharacter(
+    testCharacters.add(new AbstractPlayerCharacter(
             characterNames.get(CharacterClass.THIEF),
             turns,
             CharacterClass.THIEF,
@@ -212,13 +212,13 @@ class PlayerCharacterTest extends AbstractCharacterTest {
       var characterDefense = characterDefenses.get(characterClass);
       var characterMana = characterManas.get(characterClass);
       checkConstruction(
-          new PlayerCharacter(
+          new AbstractPlayerCharacter(
               characterName, turns, characterClass, characterHP, characterDefense, characterMana
           ),
           character,
-          new PlayerCharacter(
+          new AbstractPlayerCharacter(
                   "Test", turns, characterClass, characterHP, characterDefense, characterMana),
-          new PlayerCharacter(characterName, turns,
+          new AbstractPlayerCharacter(characterName, turns,
               characterClass == CharacterClass.THIEF ? CharacterClass.BLACK_MAGE
                   : CharacterClass.THIEF, characterHP, characterDefense, characterMana));
       assertNotEquals(character, enemy);
@@ -486,7 +486,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     /* Successful spell FIRE
     *  Target got burnt
     *  Note: (3.507e-47)% chance of failing due to RNG */
-    AbstractCharacter tank1 = new PlayerCharacter("Tank1", turns, CharacterClass.KNIGHT, 30000, 100, 100);
+    AbstractCharacter tank1 = new AbstractPlayerCharacter("Tank1", turns, CharacterClass.KNIGHT, 30000, 100, 100);
     while(!tank1.isBurned() && tank1.isAlive()){
       int result = black_mage.castSpell(tank1, SpellClass.FIRE);
       if(result == -8){
@@ -500,7 +500,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     /* Successful spell THUNDER
      *  Target got paralyzed
      *  Note: (3.540e-76)% chance of failing due to RNG */
-    AbstractCharacter tank2 = new PlayerCharacter("Tank2", turns, CharacterClass.KNIGHT, 30000, 100, 100);
+    AbstractCharacter tank2 = new AbstractPlayerCharacter("Tank2", turns, CharacterClass.KNIGHT, 30000, 100, 100);
     while(!tank2.isParalyzed() && tank2.isAlive()){
       int result = black_mage.castSpell(tank2, SpellClass.THUNDER);
       if(result == -8){

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
+import com.github.cc3002.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.cc3002.finalreality.model.weapon.Weapon;
 import com.github.cc3002.finalreality.model.weapon.WeaponType;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public abstract class AbstractCharacterTest {
   @Test
   void waitTurnTest() {
     Assertions.assertTrue(turns.isEmpty());
-    AbstractCharacter character = new PlayerCharacter("Darius", turns, CharacterClass.KNIGHT, 100, 20, 20);
+    AbstractCharacter character = new AbstractPlayerCharacter("Darius", turns, CharacterClass.KNIGHT, 100, 20, 20);
     Weapon weapon = new Weapon("BF Sword", 30, 0, 10, WeaponType.SWORD);
     character.equip(weapon);
     character.waitTurn();

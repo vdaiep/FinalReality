@@ -1,7 +1,7 @@
 package com.github.cc3002.finalreality.model.character;
 
 import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
+import com.github.cc3002.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.cc3002.finalreality.model.weapon.SpellClass;
 import com.github.cc3002.finalreality.model.weapon.Weapon;
 import com.github.cc3002.finalreality.model.weapon.WeaponType;
@@ -55,7 +55,7 @@ class EnemyTest extends AbstractCharacterTest {
     checkConstruction(new Enemy(ENEMY_NAME, ENEMY_WEIGHT, ENEMY_AD, turns, ENEMY_MAX_HP, ENEMY_DEFENSE),
         testCharacters.get(0),
         new Enemy(ENEMY_NAME, 11, ENEMY_AD, turns, ENEMY_MAX_HP, ENEMY_DEFENSE),
-        new PlayerCharacter(ENEMY_NAME, turns, CharacterClass.THIEF, ENEMY_MAX_HP, ENEMY_DEFENSE, 0));
+        new AbstractPlayerCharacter(ENEMY_NAME, turns, CharacterClass.THIEF, ENEMY_MAX_HP, ENEMY_DEFENSE, 0));
   }
 
   /**
@@ -91,7 +91,7 @@ class EnemyTest extends AbstractCharacterTest {
   void interactionsTest() {
     /* Local set-up */
     AbstractCharacter enemy = testCharacters.get(0);
-    AbstractCharacter player = new PlayerCharacter("Sylas", turns, CharacterClass.THIEF, 100, 20, 100);
+    AbstractCharacter player = new AbstractPlayerCharacter("Sylas", turns, CharacterClass.THIEF, 100, 20, 100);
     Weapon other_sword = new Weapon("Long sword", 100, 20, 10, WeaponType.SWORD);
 
     /* Enemies should have no mana */
