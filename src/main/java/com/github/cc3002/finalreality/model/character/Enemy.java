@@ -1,4 +1,4 @@
-package com.github.islaterm.finalreality.model.character;
+package com.github.cc3002.finalreality.model.character;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
@@ -14,15 +14,39 @@ import org.jetbrains.annotations.NotNull;
 public class Enemy extends AbstractCharacter {
 
   private final int weight;
+  private final int attackDamage;
 
   /**
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
    * play.
    */
-  public Enemy(@NotNull final String name, final int weight,
-      @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name);
+  public Enemy(@NotNull final String name, @NotNull final BlockingQueue<ICharacter> turnsQueue,
+               int maxHP, int defense, int weight, int attackDamage) {
+    super(turnsQueue, name, maxHP, defense);
     this.weight = weight;
+    this.attackDamage = attackDamage;
+  }
+
+  public void attack(ICharacter that){
+    that.getAttacked(this.getAttackDamage());
+  }
+
+  /**
+   * Returns the weight of this enemy.
+   */
+  public int getWeight() {
+    return weight;
+  }
+
+  public int getAttackDamage(){
+    return attackDamage;
+  }
+
+  @Override
+  public void waitTurn() {
+    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+    scheduledExecutor
+        .schedule(this::addToQueue, this.getWeight() / 10, TimeUnit.SECONDS);
   }
 
   @Override
@@ -40,19 +64,5 @@ public class Enemy extends AbstractCharacter {
     }
     final Enemy enemy = (Enemy) o;
     return getWeight() == enemy.getWeight();
-  }
-
-  /**
-   * Returns the weight of this enemy.
-   */
-  public int getWeight() {
-    return weight;
-  }
-
-  @Override
-  public void waitTurn() {
-    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    scheduledExecutor
-        .schedule(this::addToQueue, this.getWeight() / 10, TimeUnit.SECONDS);
   }
 }

@@ -1,4 +1,4 @@
-package com.github.islaterm.finalreality.model.character;
+package com.github.cc3002.finalreality.model.character;
 
 /**
  * This represents a character from the game.
@@ -14,8 +14,22 @@ public interface ICharacter {
    */
   void waitTurn();
 
+
+  void getAttacked(int rawDamage);
+
+  void attack(ICharacter that);
+
   /**
    * Returns this character's name.
    */
   String getName();
+
+  int getHP();
+
+  int getMaxHP();
+
+  int getDefense();
+
+
 }
+

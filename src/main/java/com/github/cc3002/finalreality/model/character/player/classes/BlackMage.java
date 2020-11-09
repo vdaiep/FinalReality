@@ -1,7 +1,7 @@
-package com.github.islaterm.finalreality.model.character.player.classes;
+package com.github.cc3002.finalreality.model.character.player.classes;
 
-import com.github.islaterm.finalreality.model.character.ICharacter;
-import com.github.islaterm.finalreality.model.character.player.AbstractPlayerCharacter;
+import com.github.cc3002.finalreality.model.character.ICharacter;
+import com.github.cc3002.finalreality.model.character.player.AbstractPlayerCharacter;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import org.jetbrains.annotations.NotNull;
@@ -11,15 +11,21 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BlackMage extends AbstractPlayerCharacter {
 
+  protected int mana;
+
+  protected final int maxMana;
+
   /**
    * Creates a new character.
    *
    * @param name
    *     the character's name
    */
-  public BlackMage(@NotNull final String name,
-      @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(name, turnsQueue);
+  public BlackMage(@NotNull final String name, @NotNull final BlockingQueue<ICharacter> turnsQueue,
+                   int maxHP, int defense, int maxMana) {
+    super(name, turnsQueue, maxHP, defense);
+    this.maxMana = maxMana;
+    this.mana = maxMana;
   }
 
   @Override

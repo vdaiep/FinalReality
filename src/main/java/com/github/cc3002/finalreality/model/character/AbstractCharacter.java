@@ -1,4 +1,4 @@
-package com.github.islaterm.finalreality.model.character;
+package com.github.cc3002.finalreality.model.character;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
@@ -16,11 +16,17 @@ public abstract class AbstractCharacter implements ICharacter {
   protected final BlockingQueue<ICharacter> turnsQueue;
   protected final String name;
   protected ScheduledExecutorService scheduledExecutor;
+  protected int HP;
+  protected final int maxHP;
+  protected final int defense;
 
   protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
-      @NotNull String name) {
+      @NotNull String name, int maxHP, int defense) {
     this.turnsQueue = turnsQueue;
     this.name = name;
+    this.maxHP = maxHP;
+    this.HP = maxHP;
+    this.defense = defense;
   }
 
   /**
@@ -49,7 +55,26 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   @Override
+  public void getAttacked(int rawDamage){
+    int damage = Math.max(0, rawDamage - this.defense);
+    this.HP = Math.max(0, this.getHP() - damage);
+  }
+
+  @Override
   public String getName() {
     return name;
   }
+
+  public int getHP(){
+    return HP;
+  }
+
+  public int getMaxHP(){
+    return maxHP;
+  }
+
+  public int getDefense() {
+    return defense;
+  }
+
 }

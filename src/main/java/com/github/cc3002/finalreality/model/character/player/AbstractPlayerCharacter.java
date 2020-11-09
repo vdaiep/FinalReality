@@ -1,8 +1,8 @@
-package com.github.islaterm.finalreality.model.character.player;
+package com.github.cc3002.finalreality.model.character.player;
 
-import com.github.islaterm.finalreality.model.character.AbstractCharacter;
-import com.github.islaterm.finalreality.model.character.ICharacter;
-import com.github.islaterm.finalreality.model.weapon.IWeapon;
+import com.github.cc3002.finalreality.model.character.AbstractCharacter;
+import com.github.cc3002.finalreality.model.character.ICharacter;
+import com.github.cc3002.finalreality.model.weapon.IWeapon;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -28,8 +28,8 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
    *     the queue with the characters waiting for their turn
    */
   public AbstractPlayerCharacter(@NotNull String name,
-      @NotNull BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name);
+      @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHP, int defense) {
+    super(turnsQueue, name, maxHP, defense);
   }
 
   @Override
@@ -39,16 +39,18 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
         .schedule(this::addToQueue, equippedWeapon.getWeight() / 10, TimeUnit.SECONDS);
   }
 
-
   @Override
   public void equip(IWeapon weapon) {
-    // Esto se tiene que cambiar para la entrega parcial 3
     this.equippedWeapon = weapon;
   }
 
   @Override
   public IWeapon getEquippedWeapon() {
     return equippedWeapon;
+  }
+
+  public void attack(ICharacter that){
+    that.getAttacked(this.getEquippedWeapon().getDamage());
   }
 
   @Override
