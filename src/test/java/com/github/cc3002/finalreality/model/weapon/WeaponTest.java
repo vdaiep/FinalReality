@@ -16,29 +16,28 @@ class WeaponTest {
   private static final int MAGIC_DAMAGE = 20;
   private static final int SPEED = 10;
 
-
-  private Weapon testAxe;
-  private Weapon testStaff;
-  private Weapon testSword;
-  private Weapon testBow;
-  private Weapon testKnife;
+  private IWeapon testAxe;
+  private IWeapon testStaff;
+  private IWeapon testSword;
+  private IWeapon testBow;
+  private IWeapon testKnife;
 
   @BeforeEach
   void setUp() {
-    testAxe = new Weapon(AXE_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.AXE);
-    testStaff = new Weapon(STAFF_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.STAFF);
-    testSword = new Weapon(SWORD_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.SWORD);
-    testBow = new Weapon(BOW_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.BOW);
-    testKnife = new Weapon(KNIFE_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.KNIFE);
+    testAxe = new Axe(AXE_NAME, DAMAGE, SPEED);
+    testStaff = new Staff(STAFF_NAME, DAMAGE, SPEED, MAGIC_DAMAGE);
+    testSword = new Sword(SWORD_NAME, DAMAGE, SPEED);
+    testBow = new Bow(BOW_NAME, DAMAGE, SPEED);
+    testKnife = new Knife(KNIFE_NAME, DAMAGE, SPEED);
   }
 
   @Test
   void constructorTest() {
-    var expectedAxe = new Weapon(AXE_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.AXE);
-    var expectedStaff = new Weapon(STAFF_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.STAFF);
-    var expectedSword = new Weapon(SWORD_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.SWORD);
-    var expectedBow = new Weapon(BOW_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.BOW);
-    var expectedKnife = new Weapon(KNIFE_NAME, DAMAGE, MAGIC_DAMAGE, SPEED, WeaponType.KNIFE);
+    IWeapon expectedAxe = new Axe(AXE_NAME, DAMAGE, SPEED);
+    IWeapon expectedStaff = new Staff(STAFF_NAME, DAMAGE, SPEED, MAGIC_DAMAGE);
+    IWeapon expectedSword = new Sword(SWORD_NAME, DAMAGE, SPEED);
+    IWeapon expectedBow = new Bow(BOW_NAME, DAMAGE, SPEED);
+    IWeapon expectedKnife = new Knife(KNIFE_NAME, DAMAGE, SPEED);
 
     assertEquals(expectedAxe, testAxe);
     assertEquals(expectedAxe.hashCode(), testAxe.hashCode());
@@ -50,10 +49,10 @@ class WeaponTest {
     assertEquals(expectedBow.hashCode(), testBow.hashCode());
     assertEquals(expectedKnife, testKnife);
     assertEquals(expectedKnife.hashCode(), testKnife.hashCode());
-    assertEquals(0, testAxe.getMagicDamage());
+    assertEquals(MAGIC_DAMAGE, testStaff.getMagicDamage());
     assertEquals(0, testSword.getMagicDamage());
     assertEquals(0, testBow.getMagicDamage());
     assertEquals(0, testKnife.getMagicDamage());
-    assertEquals(MAGIC_DAMAGE, testStaff.getMagicDamage());
+    assertEquals(0, testAxe.getMagicDamage());
   }
 }
