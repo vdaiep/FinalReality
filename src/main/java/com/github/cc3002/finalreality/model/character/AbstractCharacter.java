@@ -1,7 +1,9 @@
 package com.github.cc3002.finalreality.model.character;
 
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,10 +13,15 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.0
  */
 public abstract class AbstractCharacter implements ICharacter {
+
+  /**
+   * Handles the situation when this character dies (HP = 0)
+   */
+  protected final PropertyChangeSupport deathEvent = new PropertyChangeSupport(this);
 
   /**
    * Queue with all characters waiting for their turn.
@@ -42,30 +49,33 @@ public abstract class AbstractCharacter implements ICharacter {
   protected final int maxHP;
 
   /**
-   * Defense of this character
+   * Defense of this character.
    */
   protected final int defense;
 
   /**
+   * Checks if this character has 0 HP.
+   */
+  protected boolean alive;
+
+  /**
    * Creates a Character with a name, maximum HP and defense, and an associated turns queue.
    *
-   * @param turnsQueue
-   *    associated turns queue.
-   * @param name
-   *    'name' parameter.
-   * @param maxHP
-   *    'maxHP' parameter.
-   * @param defense
-   *    'defense' parameter.
+   * @param turnsQueue associated turns queue.
+   * @param name       'name' parameter.
+   * @param maxHP      'maxHP' parameter.
+   * @param defense    'defense' parameter.
    * @since 1.0
    */
   protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
-      @NotNull String name, int maxHP, int defense) {
+                              @NotNull String name, int maxHP, int defense) {
     this.turnsQueue = turnsQueue;
     this.name = name;
     this.maxHP = maxHP;
     this.HP = maxHP;
     this.defense = defense;
+    this.alive = true;
+    this.scheduledExecutor = Executors.newScheduledThreadPool(1);
   }
 
   /**
@@ -73,22 +83,9 @@ public abstract class AbstractCharacter implements ICharacter {
    *
    * @since 1.0
    */
-  protected void addToQueue() {
+  public void addToQueue() {
     turnsQueue.add(this);
     scheduledExecutor.shutdown();
-  }
-
-  /**
-   * Receives damage when attacked by another Character or Enemy.
-   *
-   * @param rawDamage
-   *    Damage received.
-   * @since 1.02
-   */
-  @Override
-  public void getAttacked(int rawDamage){
-    int damage = Math.max(0, rawDamage - this.defense);
-    this.HP = Math.max(0, this.getHP() - damage);
   }
 
   /**
@@ -108,7 +105,7 @@ public abstract class AbstractCharacter implements ICharacter {
    * @return 'HP' parameter
    * @since 1.0
    */
-  public int getHP(){
+  public int getHP() {
     return HP;
   }
 
@@ -118,7 +115,7 @@ public abstract class AbstractCharacter implements ICharacter {
    * @return 'maxHP' parameter
    * @since 1.0
    */
-  public int getMaxHP(){
+  public int getMaxHP() {
     return maxHP;
   }
 
@@ -130,6 +127,16 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   public int getDefense() {
     return defense;
+  }
+
+  /**
+   * Gets the living condition of the character.
+   *
+   * @return 'alive' parameter
+   * @since 1.0
+   */
+  public boolean isAlive(){
+    return alive;
   }
 
   /**
@@ -150,7 +157,7 @@ public abstract class AbstractCharacter implements ICharacter {
             getDefense() == that.getDefense() &&
             Objects.equals(turnsQueue, that.turnsQueue) &&
             Objects.equals(getName(), that.getName()) &&
-            Objects.equals(scheduledExecutor, that.scheduledExecutor);
+            Objects.equals(alive, that.alive);
   }
 
   /**
@@ -161,6 +168,6 @@ public abstract class AbstractCharacter implements ICharacter {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(turnsQueue, getName(), scheduledExecutor, getHP(), getMaxHP(), getDefense());
+    return Objects.hash(turnsQueue, getName(), getHP(), getMaxHP(), getDefense(), alive);
   }
 }

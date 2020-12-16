@@ -6,7 +6,7 @@ import java.util.Objects;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.03
  */
 public class Staff extends AbstractWeapon {
@@ -80,7 +80,6 @@ public class Staff extends AbstractWeapon {
    * @return 'magicDamage' parameter.
    * @since 1.0
    */
-  @Override
   public int getMagicDamage(){
     return this.magicDamage;
   }

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  * @author Vicente Daie Pinilla.
  * @see ICharacter
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.0
  */
-public class AbstractCharacterTest2 {
+public class AbstractCharacterTest {
 
     protected BlockingQueue<ICharacter> turns;
-    protected List<IPlayerCharacter> testCharacters;
-    protected List<IWeapon> testWeapons;
+    protected ArrayList<IPlayerCharacter> testCharacters;
+    protected ArrayList<IWeapon> testWeapons;
 
     /**
      * Setup method. Declares turns queue and test lists.
@@ -51,7 +50,7 @@ public class AbstractCharacterTest2 {
     @Test
     void waitTurnTest() {
         Assertions.assertTrue(turns.isEmpty());
-        IPlayerCharacter character = new Knight("Darius", turns, 100, 20);
+        IPlayerCharacter character = new Knight("Darius", turns, 100, 20, testCharacters);
         IWeapon weapon = new Sword("BF Sword", 30, 15);
         character.equip(weapon);
         character.waitTurn();

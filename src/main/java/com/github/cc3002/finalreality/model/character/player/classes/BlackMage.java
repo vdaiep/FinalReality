@@ -2,8 +2,10 @@ package com.github.cc3002.finalreality.model.character.player.classes;
 
 import com.github.cc3002.finalreality.model.character.ICharacter;
 import com.github.cc3002.finalreality.model.character.player.AbstractPlayerCharacter;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+import com.github.cc3002.finalreality.model.character.player.IPlayerCharacter;
 import com.github.cc3002.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.03
  */
 public class BlackMage extends AbstractPlayerCharacter {
@@ -25,6 +27,7 @@ public class BlackMage extends AbstractPlayerCharacter {
    * This character's maximum mana.
    */
   protected final int maxMana;
+
 
   /**
    * Creates a new Thief with a name, maximum HP, defense, maximum mana and an associated turns queue.
@@ -42,8 +45,8 @@ public class BlackMage extends AbstractPlayerCharacter {
    * @since 1.03
    */
   public BlackMage(@NotNull final String name, @NotNull final BlockingQueue<ICharacter> turnsQueue,
-                   int maxHP, int defense, int maxMana) {
-    super(name, turnsQueue, maxHP, defense);
+                   int maxHP, int defense, int maxMana, ArrayList<IPlayerCharacter> aList) {
+    super(name, turnsQueue, maxHP, defense, aList);
     this.maxMana = maxMana;
     this.mana = maxMana;
   }

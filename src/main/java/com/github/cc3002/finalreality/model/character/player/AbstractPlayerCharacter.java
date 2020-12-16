@@ -1,8 +1,11 @@
 package com.github.cc3002.finalreality.model.character.player;
 
+import com.github.cc3002.finalreality.DeathHandler;
 import com.github.cc3002.finalreality.model.character.AbstractCharacter;
 import com.github.cc3002.finalreality.model.character.ICharacter;
 import com.github.cc3002.finalreality.model.weapon.IWeapon;
+
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -15,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.03
  */
 public abstract class AbstractPlayerCharacter extends AbstractCharacter implements
@@ -25,6 +28,11 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
    * Current weapon equipped by the character, null if none.
    */
   protected IWeapon equippedWeapon;
+
+  /**
+   * List of characters tied to the controller.
+   */
+  protected final ArrayList<IPlayerCharacter> list;
 
   /**
    * Creates a new character with a name, maximum HP, defense, and an associated turns queue.
@@ -40,9 +48,21 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
    * @since 1.03
    */
   public AbstractPlayerCharacter(@NotNull String name,
-      @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHP, int defense) {
+      @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHP, int defense, ArrayList<IPlayerCharacter> aList) {
     super(turnsQueue, name, maxHP, defense);
     equippedWeapon = null;
+    list = aList;
+  }
+
+  /**
+   * Adds a listener which notifies the controller when this Character has died.
+   *
+   * @param handler
+   *    the listener
+   * @since 1.04
+   */
+  public void addListener(DeathHandler handler) {
+    deathEvent.addPropertyChangeListener("alive", handler);
   }
 
   /**
@@ -54,8 +74,8 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
   @Override
   public void waitTurn() {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    scheduledExecutor
-        .schedule(this::addToQueue, equippedWeapon.getWeight() / 10, TimeUnit.SECONDS);
+    int delay = equippedWeapon.getWeight();
+    scheduledExecutor.schedule(this::addToQueue, delay / 10, TimeUnit.SECONDS);
   }
 
   /**
@@ -68,6 +88,24 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
     if(Objects.nonNull(this.getEquippedWeapon())){
       this.getEquippedWeapon().beUnequipped();
       this.equippedWeapon = null;
+    }
+  }
+
+  /**
+   * Receives damage when attacked by another Character or Enemy.
+   *
+   * @param rawDamage Damage received.
+   * @since 1.02
+   */
+  @Override
+  public void getAttacked(int rawDamage) {
+    int damage = Math.max(0, rawDamage - this.defense);
+    this.HP = Math.max(0, this.getHP() - damage);
+    if (this.getHP() == 0) {
+      this.unequip();
+      this.list.remove(this);
+      this.alive = false;
+      this.deathEvent.firePropertyChange("alive", true, false);
     }
   }
 
@@ -90,7 +128,9 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
    * @since 1.02
    */
   public void attack(ICharacter that){
-    that.getAttacked(this.getEquippedWeapon().getDamage());
+    if(that.isAlive()){
+      that.getAttacked(this.getEquippedWeapon().getDamage());
+    }
   }
 
   /**

@@ -10,6 +10,8 @@ import com.github.cc3002.finalreality.model.weapon.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 /**
  * Set of tests for the {@code PlayerCharacter} class.
  *
@@ -17,10 +19,13 @@ import org.junit.jupiter.api.Test;
  * @author Vicente Daie Pinilla.
  * @see AbstractPlayerCharacter
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.0
  */
-public class PlayerCharacterTest2 extends AbstractCharacterTest2 {
+public class PlayerCharacterTest extends AbstractCharacterTest {
+
+    private static final ArrayList<IPlayerCharacter> characters = new ArrayList<>();
+    private static final ArrayList<Enemy> enemies = new ArrayList<>();
 
     private static final String SWORD_NAME = "Infinity Edge";
     private static final String AXE_NAME = "Black Cleaver";
@@ -77,11 +82,11 @@ public class PlayerCharacterTest2 extends AbstractCharacterTest2 {
         testWeapons.add(new Bow(BOW_NAME, BOW_AD, BOW_WEIGHT));
         testWeapons.add(new Staff(STAFF_NAME, STAFF_AD, STAFF_WEIGHT, STAFF_AP));
         testWeapons.add(new Sword(SWORD_NAME, SWORD_AD, SWORD_WEIGHT));
-        testCharacters.add(new Knight(KNIGHT_NAME, turns, KNIGHT_HP, KNIGHT_DEFENSE));
-        testCharacters.add(new Engineer(ENGINEER_NAME, turns, ENGINEER_HP, ENGINEER_DEFENSE));
-        testCharacters.add(new Thief(THIEF_NAME, turns, THIEF_HP, THIEF_DEFENSE));
-        testCharacters.add(new WhiteMage(WHITE_MAGE_NAME, turns, WHITE_MAGE_HP, WHITE_MAGE_DEFENSE, BLACK_MAGE_MANA));
-        testCharacters.add(new BlackMage(BLACK_MAGE_NAME, turns, BLACK_MAGE_HP, BLACK_MAGE_DEFENSE, WHITE_MAGE_MANA));
+        testCharacters.add(new Knight(KNIGHT_NAME, turns, KNIGHT_HP, KNIGHT_DEFENSE, characters));
+        testCharacters.add(new Engineer(ENGINEER_NAME, turns, ENGINEER_HP, ENGINEER_DEFENSE, characters));
+        testCharacters.add(new Thief(THIEF_NAME, turns, THIEF_HP, THIEF_DEFENSE, characters));
+        testCharacters.add(new WhiteMage(WHITE_MAGE_NAME, turns, WHITE_MAGE_HP, WHITE_MAGE_DEFENSE, BLACK_MAGE_MANA, characters));
+        testCharacters.add(new BlackMage(BLACK_MAGE_NAME, turns, BLACK_MAGE_HP, BLACK_MAGE_DEFENSE, WHITE_MAGE_MANA, characters));
     }
 
     /**
@@ -91,17 +96,17 @@ public class PlayerCharacterTest2 extends AbstractCharacterTest2 {
      */
     @Test
     void constructorTest() {
-        ICharacter enemy = new Enemy("Elder Drake", turns, 250, 20, 10, 20);
-        IPlayerCharacter knight = new Knight(KNIGHT_NAME, turns, KNIGHT_HP, KNIGHT_DEFENSE);
-        ICharacter engineer = new Engineer(ENGINEER_NAME, turns, ENGINEER_HP, ENGINEER_DEFENSE);
-        ICharacter thief = new Thief(THIEF_NAME, turns, THIEF_HP, THIEF_DEFENSE);
-        ICharacter white_mage = new WhiteMage(WHITE_MAGE_NAME, turns, WHITE_MAGE_HP, WHITE_MAGE_DEFENSE, BLACK_MAGE_MANA);
-        ICharacter black_mage = new BlackMage(BLACK_MAGE_NAME, turns, BLACK_MAGE_HP, BLACK_MAGE_DEFENSE, WHITE_MAGE_MANA);
-        ICharacter knight_alt = new Knight(KNIGHT_NAME, turns, KNIGHT_HP+1, KNIGHT_DEFENSE);
-        ICharacter engineer_alt = new Engineer(ENGINEER_NAME, turns, ENGINEER_HP+1, ENGINEER_DEFENSE);
-        ICharacter thief_alt = new Thief(THIEF_NAME, turns, THIEF_HP+1, THIEF_DEFENSE);
-        ICharacter white_mage_alt = new WhiteMage(WHITE_MAGE_NAME, turns, WHITE_MAGE_HP+1, WHITE_MAGE_DEFENSE, BLACK_MAGE_MANA);
-        ICharacter black_mage_alt = new BlackMage(BLACK_MAGE_NAME, turns, BLACK_MAGE_HP+1, BLACK_MAGE_DEFENSE, WHITE_MAGE_MANA);
+        ICharacter enemy = new Enemy("Elder Drake", turns, 250, 20, 10, 20, enemies);
+        IPlayerCharacter knight = new Knight(KNIGHT_NAME, turns, KNIGHT_HP, KNIGHT_DEFENSE, characters);
+        ICharacter engineer = new Engineer(ENGINEER_NAME, turns, ENGINEER_HP, ENGINEER_DEFENSE, characters);
+        ICharacter thief = new Thief(THIEF_NAME, turns, THIEF_HP, THIEF_DEFENSE, characters);
+        ICharacter white_mage = new WhiteMage(WHITE_MAGE_NAME, turns, WHITE_MAGE_HP, WHITE_MAGE_DEFENSE, BLACK_MAGE_MANA, characters);
+        ICharacter black_mage = new BlackMage(BLACK_MAGE_NAME, turns, BLACK_MAGE_HP, BLACK_MAGE_DEFENSE, WHITE_MAGE_MANA, characters);
+        ICharacter knight_alt = new Knight(KNIGHT_NAME, turns, KNIGHT_HP+1, KNIGHT_DEFENSE, characters);
+        ICharacter engineer_alt = new Engineer(ENGINEER_NAME, turns, ENGINEER_HP+1, ENGINEER_DEFENSE, characters);
+        ICharacter thief_alt = new Thief(THIEF_NAME, turns, THIEF_HP+1, THIEF_DEFENSE, characters);
+        ICharacter white_mage_alt = new WhiteMage(WHITE_MAGE_NAME, turns, WHITE_MAGE_HP+1, WHITE_MAGE_DEFENSE, BLACK_MAGE_MANA, characters);
+        ICharacter black_mage_alt = new BlackMage(BLACK_MAGE_NAME, turns, BLACK_MAGE_HP+1, BLACK_MAGE_DEFENSE, WHITE_MAGE_MANA, characters);
         checkConstruction(testCharacters.get(0), knight, knight_alt, engineer_alt);
         checkConstruction(testCharacters.get(1), engineer, engineer_alt, thief_alt);
         checkConstruction(testCharacters.get(2), thief, thief_alt, white_mage_alt);
@@ -254,7 +259,7 @@ public class PlayerCharacterTest2 extends AbstractCharacterTest2 {
      */
     @Test
     void interactionsTest(){
-        Enemy enemy = new Enemy("Rift Herald", turns, 45, 5, 10, 20);
+        Enemy enemy = new Enemy("Rift Herald", turns, 45, 5, 10, 20, enemies);
         IPlayerCharacter knight = testCharacters.get(0);
         IPlayerCharacter engineer = testCharacters.get(1);
         IPlayerCharacter thief = testCharacters.get(2);

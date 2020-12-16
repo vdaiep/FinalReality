@@ -6,7 +6,7 @@ import java.util.Objects;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.03
  */
 public class Axe extends AbstractWeapon {
@@ -66,17 +66,6 @@ public class Axe extends AbstractWeapon {
    */
   public boolean beEquippedByWhiteMage(){
     return false;
-  }
-
-  /**
-   * Gets the magic damage of the weapon.
-   *
-   * @return 0
-   * @since 1.0
-   */
-  @Override
-  public int getMagicDamage(){
-    return 0;
   }
 
   /**

@@ -1,11 +1,20 @@
 package com.github.cc3002.finalreality.model.weapon;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class WeaponTest {
+/**
+ * Set of tests for the {@code AbstractWeapon} class.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Vicente Daie Pinilla.
+ * @see AbstractWeapon
+ *
+ * @version 1.04
+ * @since 1.02
+ */
+public class WeaponTest {
 
   private static final String AXE_NAME = "Test Axe";
   private static final String STAFF_NAME = "Test Staff";
@@ -15,13 +24,17 @@ class WeaponTest {
   private static final int DAMAGE = 15;
   private static final int MAGIC_DAMAGE = 20;
   private static final int SPEED = 10;
+  private Axe testAxe;
+  private Staff testStaff;
+  private Sword testSword;
+  private Bow testBow;
+  private Knife testKnife;
 
-  private IWeapon testAxe;
-  private IWeapon testStaff;
-  private IWeapon testSword;
-  private IWeapon testBow;
-  private IWeapon testKnife;
-
+  /**
+   * Setup method. Declares weapons.
+   *
+   * @since 1.02
+   */
   @BeforeEach
   void setUp() {
     testAxe = new Axe(AXE_NAME, DAMAGE, SPEED);
@@ -31,6 +44,11 @@ class WeaponTest {
     testKnife = new Knife(KNIFE_NAME, DAMAGE, SPEED);
   }
 
+  /**
+   * Checks that the class' constructor and equals method work properly.
+   *
+   * @since 1.02
+   */
   @Test
   void constructorTest() {
     IWeapon expectedAxe = new Axe(AXE_NAME, DAMAGE, SPEED);
@@ -50,9 +68,5 @@ class WeaponTest {
     assertEquals(expectedKnife, testKnife);
     assertEquals(expectedKnife.hashCode(), testKnife.hashCode());
     assertEquals(MAGIC_DAMAGE, testStaff.getMagicDamage());
-    assertEquals(0, testSword.getMagicDamage());
-    assertEquals(0, testBow.getMagicDamage());
-    assertEquals(0, testKnife.getMagicDamage());
-    assertEquals(0, testAxe.getMagicDamage());
   }
 }

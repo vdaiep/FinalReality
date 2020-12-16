@@ -14,7 +14,7 @@ by [_Square Enix_](https://www.square-enix.com).
 Broadly speaking, for the combat the player has a group of characters to control and a group of 
 enemies controlled by the computer.
 
-Version Notes: v1.0 (Tarea 1)
+Version Notes: v1.04 (Tarea 2)
 ----------------------------
 
 Each character has a name, class, HP and defense. Mage classes also have mana (set to 0 on other classes). The
@@ -35,4 +35,7 @@ The weapons classes are:
 - Bow
 - Staff
 
-Each weapon has a name, weight, damage, and staffs also have magic damage (set to 0 on other classes).
+Each weapon has a name, weight, damage, and staffs also have magic damage.
+
+The model is linked to a main Controller class, which handles characters, enemies and weapons, and will 
+be a link between the user interaction and the model on future releases.

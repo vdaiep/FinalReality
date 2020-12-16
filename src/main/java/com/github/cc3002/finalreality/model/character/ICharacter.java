@@ -7,10 +7,17 @@ package com.github.cc3002.finalreality.model.character;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.0
  */
 public interface ICharacter {
+
+  /**
+   * Adds this character to the turns queue.
+   *
+   * @since 1.0
+   */
+  void addToQueue();
 
   /**
    * Sets a scheduled executor to make this character (thread) wait for {@code speed / 10}
@@ -70,5 +77,13 @@ public interface ICharacter {
    * @since 1.0
    */
   int getDefense();
+
+  /**
+   * Gets the living condition of the character.
+   *
+   * @return 'alive' parameter
+   * @since 1.0
+   */
+  boolean isAlive();
 }
 

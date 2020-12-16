@@ -1,9 +1,11 @@
 package com.github.cc3002.finalreality.model.character;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import com.github.cc3002.finalreality.DeathHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -12,10 +14,15 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.0
  */
 public class Enemy extends AbstractCharacter {
+
+  /**
+   * List of enemies tied to the controller.
+   */
+  protected final ArrayList<Enemy> list;
 
   /**
    * Weight (speed indicator) of this enemy.
@@ -45,10 +52,22 @@ public class Enemy extends AbstractCharacter {
    * @since 1.0
    */
   public Enemy(@NotNull final String name, @NotNull final BlockingQueue<ICharacter> turnsQueue,
-               int maxHP, int defense, int weight, int attackDamage) {
+               int maxHP, int defense, int weight, int attackDamage, ArrayList<Enemy> aList) {
     super(turnsQueue, name, maxHP, defense);
     this.weight = weight;
     this.attackDamage = attackDamage;
+    this.list = aList;
+  }
+
+  /**
+   * Adds a listener which notifies the controller when this Enemy has died.
+   *
+   * @param handler
+   *    the listener
+   * @since 1.04
+   */
+  public void addListener(DeathHandler handler) {
+    deathEvent.addPropertyChangeListener("alive", handler);
   }
 
   /**
@@ -59,7 +78,26 @@ public class Enemy extends AbstractCharacter {
    * @since 1.02
    */
   public void attack(ICharacter that){
-    that.getAttacked(this.getAttackDamage());
+    if(that.isAlive()){
+      that.getAttacked(this.getAttackDamage());
+    }
+  }
+
+  /**
+   * Receives damage when attacked by another Character or Enemy.
+   *
+   * @param rawDamage Damage received.
+   * @since 1.02
+   */
+  @Override
+  public void getAttacked(int rawDamage) {
+    int damage = Math.max(0, rawDamage - this.defense);
+    this.HP = Math.max(0, this.getHP() - damage);
+    if (this.getHP() == 0) {
+      this.list.remove(this);
+      this.alive = false;
+      this.deathEvent.firePropertyChange("alive", true, false);
+    }
   }
 
   /**
@@ -81,6 +119,7 @@ public class Enemy extends AbstractCharacter {
   public int getAttackDamage(){
     return attackDamage;
   }
+
 
   /**
    * Sets a scheduled executor to make this Enemy (thread) wait for {@code weight / 10}

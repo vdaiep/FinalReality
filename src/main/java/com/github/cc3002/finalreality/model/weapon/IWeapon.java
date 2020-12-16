@@ -6,7 +6,7 @@ import com.github.cc3002.finalreality.model.character.player.IPlayerCharacter;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.03
+ * @version 1.04
  * @since 1.03
  */
 public interface IWeapon {
@@ -34,14 +34,6 @@ public interface IWeapon {
    * @since 1.0
    */
   int getWeight();
-
-  /**
-   * Gets the magic damage of the weapon.
-   *
-   * @return 'magicDamage' parameter if Weapon is a Staff, 0 otherwise.
-   * @since 1.0
-   */
-  int getMagicDamage();
 
   /**
    * Gets the current bearer of the weapon.
