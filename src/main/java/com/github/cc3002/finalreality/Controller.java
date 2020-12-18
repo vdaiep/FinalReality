@@ -22,6 +22,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Controller {
 
     /**
+     * Current turn phase.
+     */
+    private IPhase currentPhase;
+
+    /**
      * Array with all the weapons the player has on its inventory.
      */
     private final ArrayList<IWeapon> inventory;
@@ -80,6 +85,11 @@ public class Controller {
         gameStatus = 0;
     }
 
+    public void setCurrentPhase(IPhase phase){
+        currentPhase = phase;
+        currentPhase.doPhase();
+    }
+
     /**
      * Method triggered by the listeners when a character dies. It checks if the game has come to an end.
      *
@@ -120,7 +130,8 @@ public class Controller {
      * @since 1.04
      */
     public void enemyTurn(Enemy playingEnemy){
-        playingEnemy.waitTurn();
+        currentPhase = new AttackPhase(this, playingEnemy);
+        currentPhase.doPhase();
     }
 
     /**
@@ -131,24 +142,28 @@ public class Controller {
      * @since 1.04
      */
     public void playerTurn(IPlayerCharacter playingPlayerCharacter){
-        playingPlayerCharacter.waitTurn();
+        currentPhase = new EquipmentPhase(this, playingPlayerCharacter);
+        currentPhase.doPhase();
     }
 
     /**
      * Method that deals with turns, checks if the next turn is for an enemy or a player character and redirects to
      * the corresponding method.
      *
-     * @throws InterruptedException
-     *    shouldn't happen
      * @since 1.04
      */
-    public void turn() throws InterruptedException {
-        ICharacter playingCharacter = turnsQueue.take();
-        if(enemies.contains(playingCharacter)){
-            enemyTurn((Enemy) playingCharacter);
+    public void turn(){
+        try {
+            ICharacter playingCharacter = turnsQueue.take();
+            if (enemies.contains(playingCharacter)) {
+                enemyTurn((Enemy) playingCharacter);
+            }
+            if (characters.contains(playingCharacter)) {
+                playerTurn((IPlayerCharacter) playingCharacter);
+            }
         }
-        if(characters.contains(playingCharacter)) {
-            playerTurn((IPlayerCharacter) playingCharacter);
+        catch (InterruptedException i){
+            turn();
         }
     }
 

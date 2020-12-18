@@ -1,5 +1,6 @@
 package com.github.cc3002.finalreality.gui;
 
+import com.github.cc3002.finalreality.Controller;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,9 +13,11 @@ import javafx.stage.Stage;
  * <Complete here with the details of the implemented application>
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Vicente Daie Pinilla
  */
 public class FinalReality extends Application {
+
+  private final Controller controller = new Controller();
 
   public static void main(String[] args) {
     launch(args);
