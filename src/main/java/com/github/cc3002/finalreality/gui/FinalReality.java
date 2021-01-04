@@ -179,7 +179,7 @@ public class FinalReality extends Application {
     Text defeatMessage = new Text("Defeat.");
 
     /**
-     * Graphical figures
+     * Graphical figures.
      */
     GridPane charactersForm = new GridPane();
     GridPane weaponsForm = new GridPane();
@@ -278,7 +278,7 @@ public class FinalReality extends Application {
         EventHandler<ActionEvent> startFightEvent = event -> status = 2;
         startFightButton.setOnAction(startFightEvent);
         victoryMessage.setFont(Font.font("Arial", FontWeight.NORMAL, 200));
-        victoryMessage.setLayoutX(200);
+        victoryMessage.setLayoutX(100);
         victoryMessage.setLayoutY(300);
         victoryMessage.setVisible(false);
         defeatMessage.setFont(Font.font("Arial", FontWeight.NORMAL, 200));

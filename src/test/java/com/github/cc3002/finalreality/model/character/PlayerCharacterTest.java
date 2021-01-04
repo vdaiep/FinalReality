@@ -1,8 +1,5 @@
 package com.github.cc3002.finalreality.model.character;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import com.github.cc3002.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.cc3002.finalreality.model.character.player.IPlayerCharacter;
 import com.github.cc3002.finalreality.model.character.player.classes.*;
@@ -11,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Set of tests for the {@code PlayerCharacter} class.
@@ -117,6 +116,13 @@ public class PlayerCharacterTest extends AbstractCharacterTest {
         assertNotEquals(thief, enemy);
         assertNotEquals(white_mage, enemy);
         assertNotEquals(black_mage, enemy);
+        assertFalse(knight.isEnemy());
+        assertFalse(engineer.isEnemy());
+        assertFalse(thief.isEnemy());
+        assertFalse(black_mage.isEnemy());
+        assertFalse(white_mage.isEnemy());
+        assertTrue(enemy.isEnemy());
+
     }
 
     /**
@@ -138,6 +144,7 @@ public class PlayerCharacterTest extends AbstractCharacterTest {
         IWeapon sword = testWeapons.get(4);
         IWeapon staff2 = new Staff("Luden's Echo", 20, 15, 40);
 
+        assertTrue(knight.canEquip(axe));
         knight.equip(axe);
         assertEquals(axe, knight.getEquippedWeapon());
         assertEquals(knight, axe.getBearer());
@@ -161,6 +168,7 @@ public class PlayerCharacterTest extends AbstractCharacterTest {
         assertNull(knife.getBearer());
         assertNull(knight.getEquippedWeapon());
 
+        assertTrue(engineer.canEquip(axe));
         engineer.equip(axe);
         assertEquals(axe, engineer.getEquippedWeapon());
         assertEquals(engineer, axe.getBearer());
@@ -184,6 +192,7 @@ public class PlayerCharacterTest extends AbstractCharacterTest {
         assertNull(bow.getBearer());
         assertNull(engineer.getEquippedWeapon());
 
+        assertTrue(thief.canEquip(sword));
         thief.equip(axe);
         assertNull(engineer.getEquippedWeapon());
         assertNull(axe.getBearer());
@@ -206,6 +215,7 @@ public class PlayerCharacterTest extends AbstractCharacterTest {
         assertNull(bow.getBearer());
         assertNull(thief.getEquippedWeapon());
 
+        assertTrue(black_mage.canEquip(knife));
         black_mage.equip(axe);
         assertNull(black_mage.getEquippedWeapon());
         assertNull(axe.getBearer());
@@ -227,6 +237,7 @@ public class PlayerCharacterTest extends AbstractCharacterTest {
         assertNull(staff.getBearer());
         assertNull(black_mage.getEquippedWeapon());
 
+        assertTrue(white_mage.canEquip(staff));
         white_mage.equip(axe);
         assertNull(white_mage.getEquippedWeapon());
         assertNull(axe.getBearer());

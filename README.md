@@ -14,11 +14,14 @@ by [_Square Enix_](https://www.square-enix.com).
 Broadly speaking, for the combat the player has a group of characters to control and a group of 
 enemies controlled by the computer.
 
-Version Notes: v1.04 (Tarea 2)
+Version Notes: v1.05 (final)
 ----------------------------
 
-Each character has a name, class, HP and defense. Mage classes also have mana (set to 0 on other classes). The
-classes are the following:
+Choose 5 characters and 5 weapons to fight against 5 CPU-controlled enemies!
+On each character's turn, you'll choose a weapon to equip, and an enemy to attack.
+Each character can equip weapons according to its class, and the weapon class.
+
+Each character has a name, class, HP and defense. The classes are the following:
 
 - Knight
 - Engineer
@@ -26,8 +29,7 @@ classes are the following:
 - White Mage
 - Black Mage
 
-On each character's turn (to be implemented on a future release), it can equip a weapon.
-The weapons classes are:
+On each character's turn, it can equip a weapon. The weapons classes are:
 
 - Sword
 - Axe
@@ -35,7 +37,22 @@ The weapons classes are:
 - Bow
 - Staff
 
-Each weapon has a name, weight, damage, and staffs also have magic damage.
+Each weapon has a name, weight and attack damage, and those stats are inherited by the character holding it.
+Enemies can't equip weapons, they have their own fixed attack damage and weight.
 
-The model is linked to a main Controller class, which handles characters, enemies and weapons, and will 
-be a link between the user interaction and the model on future releases.
+ - Knights can equip Swords, Axes and Knives.
+ - Engineers can equip Axes and Bows.
+ - Thieves can equip Swords, Staffs and Bows.
+ - Black Mages can equip Knives and Staffs.
+ - White Mages can equip only Staffs.
+
+The order of the turns is decided according to the weight.
+Each class will have different stats!
+
+Damage is calculated as the attack damage of the attacker, minus the defense of the victim.
+If a character or enemy goes down to 0 HP, it is out of combat.
+The team (characters or enemies) that has all its characters out of combat will lose the game.
+
+Choose your team wisely! Good luck!
+
+The code is written in Java and built using the MVC design pattern.

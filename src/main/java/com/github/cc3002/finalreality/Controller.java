@@ -260,25 +260,25 @@ public class Controller {
      * @since 1.04
      */
     public void turn() {
-        try {
-            ICharacter playingCharacter = turnsQueue.take();
-            if (!playingCharacter.isEnemy()) {
-                int index = getCharacters().indexOf(playingCharacter);
-                if (index == -1) {
-                    turn();
+        if(gameStatus == 0) {
+            try {
+                ICharacter playingCharacter = turnsQueue.take();
+                if (!playingCharacter.isEnemy()) {
+                    int index = getCharacters().indexOf(playingCharacter);
+                    if (index == -1) {
+                        turn();
+                    } else {
+                        playerTurn(index);
+                    }
                 } else {
-                    playerTurn(index);
+                    int index = getEnemies().indexOf(playingCharacter);
+                    if (index == -1) {
+                        turn();
+                    } else {
+                        enemyTurn(index);
+                    }
                 }
-            } else {
-                int index = getEnemies().indexOf(playingCharacter);
-                if (index == -1) {
-                    turn();
-                } else {
-                    enemyTurn(index);
-                }
-            }
-        } catch (InterruptedException i) {
-            turn();
+            } catch (InterruptedException ignored) {}
         }
     }
 

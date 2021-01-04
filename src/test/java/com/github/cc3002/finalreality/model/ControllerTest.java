@@ -1,138 +1,188 @@
 package com.github.cc3002.finalreality.model;
 
 import com.github.cc3002.finalreality.Controller;
-import com.github.cc3002.finalreality.model.character.Enemy;
-import com.github.cc3002.finalreality.model.character.ICharacter;
-import com.github.cc3002.finalreality.model.character.player.IPlayerCharacter;
 import com.github.cc3002.finalreality.model.character.player.classes.BlackMage;
 import com.github.cc3002.finalreality.model.character.player.classes.WhiteMage;
-import com.github.cc3002.finalreality.model.weapon.IWeapon;
 import com.github.cc3002.finalreality.model.weapon.Staff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Set of tests for the {@code Controller} class.
+ * Set of tests for the Controller class and its helpers classes:
+ * @code Controller
+ * @code AttackPhase
+ * @code EquipmentPhase
+ * @code DeathHandler
+ * @code WeaponFactory
+ * @code CharacterFactory
+ * @code EnemyPhase is ignored due to trivial methods.
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  * @see Controller
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.04
  */
 public class ControllerTest {
 
     private Controller controller;
     private Controller controller2;
+    private Controller controller3;
+    private final ArrayList<String> knight_names = new ArrayList<>();
+    private final ArrayList<String> engineer_names = new ArrayList<>();
+    private final ArrayList<String> thief_names = new ArrayList<>();
+    private final ArrayList<String> black_mage_names = new ArrayList<>();
+    private final ArrayList<String> white_mage_names = new ArrayList<>();
+    private final ArrayList<String> sword_names = new ArrayList<>();
+    private final ArrayList<String> axe_names = new ArrayList<>();
+    private final ArrayList<String> knife_names = new ArrayList<>();
+    private final ArrayList<String> staff_names = new ArrayList<>();
+    private final ArrayList<String> bow_names = new ArrayList<>();
+    private final ArrayList<String> emptyArray = new ArrayList<>();
+    private final ArrayList<String> strongKnights1 = new ArrayList<>();
+    private final ArrayList<String> strongSwords1 = new ArrayList<>();
+    private final ArrayList<String> strongKnights2 = new ArrayList<>();
+    private final ArrayList<String> strongSwords2 = new ArrayList<>();
 
     /**
-     * Setup method. Declares two different controllers for testing.
+     * Setup method. Declares three different controllers for testing.
      *
-     * @since 1.04
+     * @since 1.05
      */
     @BeforeEach
     public void setUp(){
         controller = new Controller();
         controller2 = new Controller();
+        controller3 = new Controller();
+        knight_names.add("TestKnight1");
+        engineer_names.add("TestEngineer1");
+        thief_names.add("TestThief1");
+        black_mage_names.add("TestBlackMage1");
+        white_mage_names.add("TestWhiteMage1");
+        sword_names.add("TestSword1");
+        axe_names.add("TestAxe1");
+        knife_names.add("TestKnife1");
+        staff_names.add("TestStaff1");
+        bow_names.add("TestBow1");
+        for(int i=0; i<2; i++){
+            strongKnights1.add("Strong Knight " + i);
+            strongSwords1.add("Strong Sword " + i);
+        }
+        for(int i=0; i<3; i++){
+            strongKnights2.add("Strong Knight " + i);
+            strongSwords2.add("Strong Sword " + i);
+        }
     }
 
     /**
-     * Checks that the controller works properly. Part 1.
+     * Checks that the controller's main set-up method and the getters work properly.
      *
-     * @since 1.04
+     * @since 1.05
      */
     @Test
-    public void controllerTest1(){
-        controller.createEnemy("TestEnemy1");
-        controller.createEnemy("TestEnemy2");
-        controller.createEnemy("TestEnemy3");
-        controller.createKnight("TestKnight");
-        controller.createEngineer("TestEngineer");
-        controller.createThief("TestThief");
-        controller.createBlackMage("TestBlackMage");
-        controller.createWhiteMage("TestWhiteMage");
-        controller.createAxe("TestAxe");
-        controller.createBow("TestBow");
-        controller.createStaff("TestStaff");
-        controller.createKnife("TestKnife");
-        controller.createSword("TestSword");
-        assertEquals(5, controller.getInventory().size());
+    public void controllerSetUpAndGettersTest(){
+        controller.setUpGame(knight_names, engineer_names,thief_names,black_mage_names,white_mage_names,
+                sword_names, axe_names,knife_names,staff_names,bow_names);
         assertEquals(5, controller.getCharacters().size());
-        assertEquals(3, controller.getEnemies().size());
-        assertEquals(8, controller.getQueue().size());
-        ICharacter someEnemy = controller.getQueue().poll();
-        assertNotNull(someEnemy);
-        assertTrue(controller.getEnemies().contains(someEnemy));
-        assertEquals(controller.getAttackDamage((Enemy) someEnemy), 50);
-        assertEquals(controller.getDefense(someEnemy), 20);
-        assertEquals(controller.getHP(someEnemy), 500);
-        assertEquals(controller.getMaxHP(someEnemy), 500);
-        assertEquals(controller.getWeight((Enemy) someEnemy), 20);
-        IWeapon someWeapon = controller.getInventory().get(0);
-        IPlayerCharacter somePlayerCharacter = controller.getCharacters().get(0);
-        controller.equipWeapon(somePlayerCharacter, someWeapon);
-        assertEquals(controller.getAttackDamage(someWeapon), 150);
-        assertEquals(controller.getWeight(someWeapon), 70);
-        assertEquals(somePlayerCharacter.getEquippedWeapon(), someWeapon);
-        for(int i=0;i<10;i++){
-            controller.attack(somePlayerCharacter, someEnemy);
+        assertEquals(5, controller.getCharacterNames().size());
+        assertEquals(5, controller.getCharacterDefense().size());
+        assertEquals(5, controller.getCharacterHP().size());
+        assertEquals(5, controller.getCharacterMaxHP().size());
+        assertEquals(5, controller.getCharacterAttack().size());
+        assertEquals(5, controller.getCharacterWeapons().size());
+        assertEquals(5, controller.getCharacterWeight().size());
+        assertEquals(5, controller.getEnemies().size());
+        assertEquals(5, controller.getEnemyNames().size());
+        assertEquals(5, controller.getEnemyDefense().size());
+        assertEquals(5, controller.getEnemyHP().size());
+        assertEquals(5, controller.getEnemyMaxHP().size());
+        assertEquals(5, controller.getEnemyAD().size());
+        assertEquals(5, controller.getEnemyWeight().size());
+        assertEquals(5, controller.getInventory().size());
+        assertEquals(5, controller.getWeaponAD().size());
+        assertEquals(5, controller.getWeaponBearers().size());
+        assertEquals(5, controller.getWeaponNames().size());
+        assertEquals(5, controller.getWeaponWeight().size());
+        for(int i=0;i<5;i++){
+            assertEquals("None", controller.getCharacterWeapons().get(i));
+            assertEquals("0", controller.getCharacterAttack().get(i).toString());
+            assertEquals("0", controller.getCharacterWeight().get(i).toString());
         }
-        assertEquals(controller.getHP(someEnemy), 0);
-        assertEquals(controller.getEnemies().size(), 2);
-        ICharacter anotherEnemy = controller.getQueue().poll();
-        assertNotNull(anotherEnemy);
-        assertTrue(controller.getEnemies().contains(anotherEnemy));
-        for(int i=0;i<10;i++){
-            controller.attack(somePlayerCharacter, anotherEnemy);
-        }
-        ICharacter theLastEnemy = controller.getQueue().poll();
-        assertNotNull(theLastEnemy);
-        assertTrue(controller.getEnemies().contains(theLastEnemy));
-        for(int i=0;i<10;i++) {
-            controller.attack(somePlayerCharacter, theLastEnemy);
-        }
-        assertEquals(controller.getEnemies().size(), 0);
-        assertEquals(controller.getGameStatus(), 1);
+        assertEquals(50, controller.getMagicDamage((Staff) controller.getInventory().get(3)));
+        assertEquals(100, controller.getMana((BlackMage) controller.getCharacters().get(3)));
+        assertEquals(100, controller.getMaxMana((BlackMage) controller.getCharacters().get(3)));
+        assertEquals(100, controller.getMana((WhiteMage) controller.getCharacters().get(4)));
+        assertEquals(100, controller.getMaxMana((WhiteMage) controller.getCharacters().get(4)));
     }
 
     /**
-     * Checks that the controller works properly. Part 2.
+     * Checks that the phases of the game work properly.
      *
-     * @since 1.04
+     * @since 1.05
      */
     @Test
-    public void controllerTest2(){
-        controller2.createEnemy("TestEnemy4");
-        controller2.createBlackMage("TestBlackMage2");
-        controller2.createWhiteMage("TestWhiteMage2");
-        controller2.createStaff("TestStaff2");
-        controller2.createKnife("TestKnife2");
-        Enemy enemy = controller2.getEnemies().get(0);
-        IPlayerCharacter blackMage = controller2.getCharacters().get(0);
-        IPlayerCharacter whiteMage = controller2.getCharacters().get(1);
-        IWeapon weapon1 = controller2.getInventory().get(0);
-        IWeapon weapon2 = controller2.getInventory().get(1);
-        assertEquals(controller2.getName(enemy), "TestEnemy4");
-        assertEquals(controller2.getName(weapon2), "TestKnife2");
-        assertEquals(controller2.getMagicDamage((Staff) weapon1), 50);
-        assertEquals(controller2.getMana((WhiteMage) whiteMage), 100);
-        assertEquals(controller2.getMaxMana((WhiteMage) whiteMage), 100);
-        assertEquals(controller2.getMana((BlackMage) blackMage), 100);
-        assertEquals(controller2.getMaxMana((BlackMage) blackMage), 100);
-        controller2.equipWeapon(blackMage, weapon2);
-        controller2.equipWeapon(whiteMage, weapon1);
-        assertEquals(whiteMage.getEquippedWeapon(), weapon1);
-        controller2.turn();
-        controller2.turn();
-        for(int i=0; i<10; i++){
-            controller2.attack(enemy, blackMage);
-            controller2.attack(enemy, whiteMage);
-        }
-        assertEquals(controller2.getCharacters().size(), 0);
-        assertEquals(controller2.getGameStatus(), -1);
-
+    public void controllerPhasesTest(){
+        controller.setUpGame(knight_names, emptyArray, emptyArray, emptyArray, emptyArray,
+                emptyArray, axe_names,emptyArray, emptyArray, emptyArray);
+        assertFalse(controller.getQueue().isEmpty());
+        assertTrue(controller.getCurrentPhase().isEquipmentPhase());
+        controller.getCurrentPhase().setIndexWeapon(0);
+        controller.getCurrentPhase().setIndexEnemy(0);
+        controller.getCurrentPhase().doPhase();
+        assertEquals("TestAxe1", controller.getCharacterWeapons().get(0));
+        assertEquals("150", controller.getCharacterAttack().get(0).toString());
+        assertEquals("70", controller.getCharacterWeight().get(0).toString());
+        assertEquals("TestKnight1", controller.getWeaponBearers().get(0));
+        assertFalse(controller.getCurrentPhase().isEquipmentPhase());
+        assertEquals(0, controller.getCurrentPlayer());
+        controller.getCurrentPhase().setIndexEnemy(0);
+        controller.getCurrentPhase().setIndexWeapon(0);
+        controller.getCurrentPhase().doPhase();
+        controller.setAttackPhase(0);
+        controller.getCurrentPhase().setIndexEnemy(0);
+        controller.getCurrentPhase().doPhase();
+        controller.unequip(0);
+        assertFalse(controller.getToLog().isEmpty());
+        controller.cleanLog();
+        assertEquals(0, controller.getToLog().size());
     }
 
+    /**
+     * Checks that the defeat condition can be achieved properly.
+     *
+     * @since 1.05
+     */
+    @Test
+    public void controllerDefeatTest() {
+        controller2.setUpGame(strongKnights1, emptyArray, emptyArray, emptyArray, emptyArray,
+                strongSwords1, emptyArray, emptyArray, emptyArray, emptyArray);
+        while(controller2.getGameStatus() == 0){
+            controller2.getCurrentPhase().setIndexWeapon(controller2.getCurrentPlayer());
+            controller2.getCurrentPhase().doPhase();
+            controller2.getCurrentPhase().setIndexEnemy(0);
+            controller2.getCurrentPhase().doPhase();
+        }
+        assertEquals(-1, controller2.getGameStatus());
+    }
+
+    /**
+     * Checks that the victory condition can be achieved properly.
+     *
+     * @since 1.05
+     */
+    @Test
+    public void controllerVictoryTest() {
+        controller3.setUpGame(strongKnights2, emptyArray, emptyArray, emptyArray, emptyArray,
+                strongSwords2, emptyArray, emptyArray, emptyArray, emptyArray);
+        while(controller3.getGameStatus() == 0){
+            controller3.getCurrentPhase().setIndexWeapon(controller3.getCurrentPlayer());
+            controller3.getCurrentPhase().doPhase();
+            controller3.getCurrentPhase().setIndexEnemy(0);
+            controller3.getCurrentPhase().doPhase();
+        }
+        assertEquals(1, controller3.getGameStatus());
+    }
 }
