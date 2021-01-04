@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.03
  */
 public abstract class AbstractPlayerCharacter extends AbstractCharacter implements
@@ -66,6 +66,16 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
   }
 
   /**
+   * Checks if this object is an Enemy
+   *
+   * @return false
+   * @since 1.05
+   */
+  public boolean isEnemy(){
+    return false;
+  }
+
+  /**
    * Sets a scheduled executor to make this character (thread) wait for {@code weapon weight / 10}
    * seconds before adding the character to the queue.
    *
@@ -103,7 +113,6 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
     this.HP = Math.max(0, this.getHP() - damage);
     if (this.getHP() == 0) {
       this.unequip();
-      this.list.remove(this);
       this.alive = false;
       this.deathEvent.firePropertyChange("alive", true, false);
     }

@@ -6,7 +6,7 @@ import com.github.cc3002.finalreality.model.character.player.IPlayerCharacter;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.03
  */
 public interface IWeapon {

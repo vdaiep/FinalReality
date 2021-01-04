@@ -124,13 +124,8 @@ public class ControllerTest {
         controller2.equipWeapon(blackMage, weapon2);
         controller2.equipWeapon(whiteMage, weapon1);
         assertEquals(whiteMage.getEquippedWeapon(), weapon1);
-        try{
-            controller2.turn();
-            controller2.turn();
-        }
-        catch (InterruptedException ignored){
-            ;
-        }
+        controller2.turn();
+        controller2.turn();
         for(int i=0; i<10; i++){
             controller2.attack(enemy, blackMage);
             controller2.attack(enemy, whiteMage);

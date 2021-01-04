@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.0
  */
 public abstract class AbstractCharacter implements ICharacter {

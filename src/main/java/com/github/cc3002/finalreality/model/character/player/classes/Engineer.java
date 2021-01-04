@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.03
  */
 public class Engineer extends AbstractPlayerCharacter {
@@ -54,6 +54,18 @@ public class Engineer extends AbstractPlayerCharacter {
         this.equippedWeapon = weapon;
       }
     }
+  }
+
+  /**
+   * Checks if this character can equip a weapon.
+   *
+   * @param weapon
+   *    weapon to check if compatible
+   * @return true if it can, false otherwise
+   */
+  @Override
+  public boolean canEquip(IWeapon weapon){
+    return weapon.beEquippedByEngineer();
   }
 
   /**

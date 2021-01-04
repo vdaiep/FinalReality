@@ -7,7 +7,7 @@ package com.github.cc3002.finalreality.model.character;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.0
  */
 public interface ICharacter {
@@ -26,6 +26,14 @@ public interface ICharacter {
    * @since 1.0
    */
   void waitTurn();
+
+  /**
+   * Checks if this object is an Enemy
+   *
+   * @return true if it is, false otherwise
+   * @since 1.05
+   */
+  boolean isEnemy();
 
   /**
    * Receives damage when attacked by another Character or Enemy.

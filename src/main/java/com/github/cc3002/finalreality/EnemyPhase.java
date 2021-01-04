@@ -1,9 +1,10 @@
 package com.github.cc3002.finalreality;
 
-import com.github.cc3002.finalreality.model.character.player.IPlayerCharacter;
+import com.github.cc3002.finalreality.model.character.ICharacter;
+import java.util.Random;
 
 /**
- * The Attack Phase of the turns of the player characters.
+ * The phase of the turns of the enemies.
  *
  * @author Ignacio Slater Muñoz
  * @author Vicente Daie Pinilla.
@@ -11,7 +12,7 @@ import com.github.cc3002.finalreality.model.character.player.IPlayerCharacter;
  * @version 1.05
  * @since 1.05
  */
-public class AttackPhase implements IPhase {
+public class EnemyPhase implements IPhase {
 
     /**
      * The main controller.
@@ -19,27 +20,22 @@ public class AttackPhase implements IPhase {
     private final Controller controller;
 
     /**
-     * The index of the current characters' turn.
+     * The index of the current enemy's turn.
      */
-    private final int indexCharacter;
+    private final int index;
 
     /**
-     * The index of the enemy to be attacked.
-     */
-    private int indexEnemy;
-
-    /**
-     * Creates a new attack phase.
+     * Creates a new enemy phase.
      *
      * @param theController
      *    'controller' parameter
-     * @param index
+     * @param theIndex
      *    'index' parameter
      * @since 1.05
      */
-    public AttackPhase(Controller theController, int index){
+    public EnemyPhase(Controller theController, int theIndex){
         controller = theController;
-        indexCharacter = index;
+        index = theIndex;
     }
 
     /**
@@ -49,7 +45,7 @@ public class AttackPhase implements IPhase {
      * @since 1.05
      */
     @Override
-    public boolean isEquipmentPhase(){
+    public boolean isEquipmentPhase() {
         return false;
     }
 
@@ -64,27 +60,27 @@ public class AttackPhase implements IPhase {
     }
 
     /**
-     * Sets the enemy to be attacked.
-     *
+     * Dummy overridden method.
      * @param currentEnemy
-     *    index of the enemy to be attacked
+     *    ignored
      * @since 1.05
      */
     @Override
     public void setIndexEnemy(int currentEnemy) {
-        indexEnemy = currentEnemy;
     }
 
     /**
-     * Executes this phase.
+     * Executes this phase, attacking a random character.
      *
      * @since 1.05
      */
-    @Override
     public void doPhase(){
-        IPlayerCharacter attacker = controller.getCharacters().get(indexCharacter);
-        controller.addToLog(attacker.getName() + " has attacked " + controller.getEnemies().get(indexEnemy).getName() + "!");
-        controller.attack(attacker, controller.getEnemies().get(indexEnemy));
+        Random r = new Random();
+        int randomIndex = r.nextInt(controller.getCharacters().size());
+        ICharacter attacker = controller.getEnemies().get(index);
+        controller.addToLog("--------------------------------------------");
+        controller.addToLog(attacker.getName() + " has attacked " + controller.getCharacters().get(randomIndex).getName() + "!");
+        controller.attack(attacker, controller.getCharacters().get(randomIndex));
         attacker.waitTurn();
         endPhase();
     }
@@ -94,7 +90,6 @@ public class AttackPhase implements IPhase {
      *
      * @since 1.05
      */
-    @Override
     public void endPhase(){
         controller.turn();
     }

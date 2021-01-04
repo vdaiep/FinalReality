@@ -8,7 +8,7 @@ import com.github.cc3002.finalreality.model.weapon.IWeapon;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Daie Pinilla.
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.03
  */
 public interface IPlayerCharacter extends ICharacter {
@@ -30,6 +30,15 @@ public interface IPlayerCharacter extends ICharacter {
    * @since 1.0
    */
   void equip(IWeapon weapon);
+
+  /**
+   * Checks if this character can equip a weapon.
+   *
+   * @param weapon
+   *    weapon to check if compatible
+   * @return true if it can, false otherwise
+   */
+  boolean canEquip(IWeapon weapon);
 
   /**
    * Unequips the character's weapon.

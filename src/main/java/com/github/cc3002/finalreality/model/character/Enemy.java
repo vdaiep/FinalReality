@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz
  * @author Vicente Daie Pinilla.
  *
- * @version 1.04
+ * @version 1.05
  * @since 1.0
  */
 public class Enemy extends AbstractCharacter {
@@ -94,7 +94,6 @@ public class Enemy extends AbstractCharacter {
     int damage = Math.max(0, rawDamage - this.defense);
     this.HP = Math.max(0, this.getHP() - damage);
     if (this.getHP() == 0) {
-      this.list.remove(this);
       this.alive = false;
       this.deathEvent.firePropertyChange("alive", true, false);
     }
@@ -120,6 +119,15 @@ public class Enemy extends AbstractCharacter {
     return attackDamage;
   }
 
+  /**
+   * Checks if this object is an Enemy
+   *
+   * @return true
+   * @since 1.05
+   */
+  public boolean isEnemy(){
+    return true;
+  }
 
   /**
    * Sets a scheduled executor to make this Enemy (thread) wait for {@code weight / 10}
