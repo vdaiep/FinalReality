@@ -230,6 +230,7 @@ public class FinalReality extends Application {
      * Array with the images of the weapons.
      */
     private final ArrayList<ImageView> weaponImages = new ArrayList<>();
+    private final ArrayList<Integer> weaponImagesIndex = new ArrayList<>();
 
     /**
      * Rules of the game.
@@ -474,23 +475,23 @@ public class FinalReality extends Application {
             switch (chosenClassName) {
                 case "Sword":
                     chosenSwordNames.add(chosenName);
-                    weaponImages.add(swordImageView);
+                    weaponImagesIndex.add(0);
                     break;
                 case "Axe":
                     chosenAxeNames.add(chosenName);
-                    weaponImages.add(axeImageView);
+                    weaponImagesIndex.add(1);
                     break;
                 case "Knife":
                     chosenKnifeNames.add(chosenName);
-                    weaponImages.add(knifeImageView);
+                    weaponImagesIndex.add(2);
                     break;
                 case "Staff":
                     chosenStaffNames.add(chosenName);
-                    weaponImages.add(staffImageView);
+                    weaponImagesIndex.add(3);
                     break;
                 case "Bow":
                     chosenBowNames.add(chosenName);
-                    weaponImages.add(bowImageView);
+                    weaponImagesIndex.add(4);
                     break;
             }
             numberOfWeapons++;
@@ -946,6 +947,11 @@ public class FinalReality extends Application {
         setImages(root, knifeImageView, 650, 500);
         setImages(root, staffImageView, 650, 500);
         setImages(root, bowImageView, 650, 500);
+        weaponImages.add(swordImageView);
+        weaponImages.add(axeImageView);
+        weaponImages.add(knifeImageView);
+        weaponImages.add(staffImageView);
+        weaponImages.add(bowImageView);
 
         enemyImageView.setImage(enemyImage);
         setImages(root, enemyImageView, 650, 150);
@@ -1084,7 +1090,7 @@ public class FinalReality extends Application {
                     }
                     controller.cleanLog();
                     for(int i=0; i<TOTAL_NUMBER_OF_WEAPONS; i++){
-                        weaponImages.get(i).setVisible(i == currentWeapon);
+                        weaponImages.get(i).setVisible(i == weaponImagesIndex.get(currentWeapon));
                     }
                     if(controller.isKnight(currentCharacter)){
                         knightImageView.setVisible(true);

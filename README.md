@@ -63,5 +63,10 @@ Mid-Battle screenshot
 Future releases
 ----------------------------
 
-Future releases include the addition of a battle timer, randomization of enemies' stats and names, and the ability
-for mages to cast spells while holding a staff. Be sure to check out!
+Future releases includes:
+- The addition of a battle timer.
+- Randomization of enemies' stats and names.
+- The ability for mages to cast spells while holding a staff. 
+- A warning if a character can't equip any weapon on inventory (on set-up screen).
+  
+Be sure to check out!
