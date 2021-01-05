@@ -116,6 +116,32 @@ public class ControllerTest {
         assertEquals(100, controller.getMaxMana((BlackMage) controller.getCharacters().get(3)));
         assertEquals(100, controller.getMana((WhiteMage) controller.getCharacters().get(4)));
         assertEquals(100, controller.getMaxMana((WhiteMage) controller.getCharacters().get(4)));
+        assertTrue(controller.isKnight(0));
+        assertFalse(controller.isKnight(1));
+        assertFalse(controller.isKnight(2));
+        assertFalse(controller.isKnight(3));
+        assertFalse(controller.isKnight(4));
+        assertFalse(controller.isEngineer(0));
+        assertTrue(controller.isEngineer(1));
+        assertFalse(controller.isEngineer(2));
+        assertFalse(controller.isEngineer(3));
+        assertFalse(controller.isEngineer(4));
+        assertFalse(controller.isThief(0));
+        assertFalse(controller.isThief(1));
+        assertTrue(controller.isThief(2));
+        assertFalse(controller.isThief(3));
+        assertFalse(controller.isThief(4));
+        assertFalse(controller.isBlackMage(0));
+        assertFalse(controller.isBlackMage(1));
+        assertFalse(controller.isBlackMage(2));
+        assertTrue(controller.isBlackMage(3));
+        assertFalse(controller.isBlackMage(4));
+        assertFalse(controller.isWhiteMage(0));
+        assertFalse(controller.isWhiteMage(1));
+        assertFalse(controller.isWhiteMage(2));
+        assertFalse(controller.isWhiteMage(3));
+        assertTrue(controller.isWhiteMage(4));
+
     }
 
     /**

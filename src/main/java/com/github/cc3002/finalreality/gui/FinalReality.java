@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
@@ -67,12 +69,12 @@ public class FinalReality extends Application {
     /**
      * Count of created and total characters and weapons during set-up.
      */
-    Text numberOfCreatedCharacters = new Text();
-    Text numberOfCreatedWeapons = new Text();
-    private int numberOfCharacters = 0;
-    private int numberOfWeapons = 0;
+    private final Text numberOfCreatedCharacters = new Text();
+    private final Text numberOfCreatedWeapons = new Text();
     private final int TOTAL_NUMBER_OF_WEAPONS = 5;
     private final int TOTAL_NUMBER_OF_CHARACTERS = 5;
+    private int numberOfCharacters = 0;
+    private int numberOfWeapons = 0;
 
     /**
      * Characters' stats containers.
@@ -118,91 +120,126 @@ public class FinalReality extends Application {
     /**
      * Labels shown on fight areas.
      */
-    Label characterHPLabel = new Label("HP: ");
-    Label enemyHPLabel = new Label("HP: ");
-    Label characterAttackLabel = new Label("ATK:");
-    Label enemyAttackLabel = new Label("ATK:");
-    Label weaponAttackLabel = new Label("ATK:");
-    Label characterDefenseLabel = new Label("DEF:");
-    Label enemyDefenseLabel = new Label("DEF:");
-    Label characterWeightLabel = new Label("WGH:");
-    Label enemyWeightLabel = new Label("WGH:");
-    Label weaponWeightLabel = new Label("WGH:");
-    Label characterWeaponLabel = new Label("Weapon: ");
-    Label weaponBearerLabel = new Label("Bearer: ");
+    private final Label characterHPLabel = new Label("HP: ");
+    private final Label enemyHPLabel = new Label("HP: ");
+    private final Label characterAttackLabel = new Label("ATK:");
+    private final Label enemyAttackLabel = new Label("ATK:");
+    private final Label weaponAttackLabel = new Label("ATK:");
+    private final Label characterDefenseLabel = new Label("DEF:");
+    private final Label enemyDefenseLabel = new Label("DEF:");
+    private final Label characterWeightLabel = new Label("WGH:");
+    private final Label enemyWeightLabel = new Label("WGH:");
+    private final Label weaponWeightLabel = new Label("WGH:");
+    private final Label characterWeaponLabel = new Label("Weapon: ");
+    private final Label weaponBearerLabel = new Label("Bearer: ");
 
     /**
      * Labels with characters', enemies' and weapons' stats.
      */
-    Label currentCharacterName = new Label();
-    Label currentCharacterHP = new Label();
-    Label currentCharacterDefense = new Label();
-    Label currentCharacterWeapon = new Label();
-    Label currentCharacterAttack = new Label();
-    Label currentCharacterWeight = new Label();
-    Label currentEnemyName = new Label();
-    Label currentEnemyHP = new Label();
-    Label currentEnemyDefense = new Label();
-    Label currentEnemyAD = new Label();
-    Label currentEnemyWeight = new Label();
-    Label currentWeaponName = new Label();
-    Label currentWeaponAD = new Label();
-    Label currentWeaponWeight = new Label();
-    Label currentWeaponBearer = new Label();
+    private final Label currentCharacterName = new Label();
+    private final Label currentCharacterHP = new Label();
+    private final Label currentCharacterDefense = new Label();
+    private final Label currentCharacterWeapon = new Label();
+    private final Label currentCharacterAttack = new Label();
+    private final Label currentCharacterWeight = new Label();
+    private final Label currentEnemyName = new Label();
+    private final Label currentEnemyHP = new Label();
+    private final Label currentEnemyDefense = new Label();
+    private final Label currentEnemyAD = new Label();
+    private final Label currentEnemyWeight = new Label();
+    private final Label currentWeaponName = new Label();
+    private final Label currentWeaponAD = new Label();
+    private final Label currentWeaponWeight = new Label();
+    private final Label currentWeaponBearer = new Label();
 
     /**
      * Buttons.
      */
-    Button saveCharacterButton = new Button("SAVE");
-    Button saveWeaponButton = new Button("SAVE");
-    Button startFightButton = new Button("START");
-    Button seeRulesButton = new Button("RULES");
-    Button hideRulesButton = new Button("BACK");
-    Button previousCharacterButton = new Button("Previous");
-    Button nextCharacterButton = new Button("Next");
-    Button previousEnemyButton = new Button("Previous");
-    Button nextEnemyButton = new Button("Next");
-    Button previousWeaponButton = new Button("Previous");
-    Button nextWeaponButton = new Button("Next");
-    Button equipButton = new Button("Equip");
-    Button attackButton = new Button("Attack");
+    private final Button saveCharacterButton = new Button("SAVE");
+    private final Button saveWeaponButton = new Button("SAVE");
+    private final Button startFightButton = new Button("START");
+    private final Button seeRulesButton = new Button("RULES");
+    private final Button hideRulesButton = new Button("BACK");
+    private final Button previousCharacterButton = new Button("Previous");
+    private final Button nextCharacterButton = new Button("Next");
+    private final Button previousEnemyButton = new Button("Previous");
+    private final Button nextEnemyButton = new Button("Next");
+    private final Button previousWeaponButton = new Button("Previous");
+    private final Button nextWeaponButton = new Button("Next");
+    private final Button equipButton = new Button("Equip");
+    private final Button attackButton = new Button("Attack");
 
     /**
      * Displayed messages.
      */
-    Text welcomeMessage = new Text("Welcome to Final Reality!");
-    Text chooseYourCharactersMessage = new Text("Choose 5 characters\n    to fight for you!");
-    Text chooseYourWeaponsMessage = new Text("  Choose 5 weapons to\nmassacre your enemies!");
-    Text nameErrorMessage = new Text("Names shouldn't be longer\n       than 12 characters!");
-    Text fightMessage = new Text("FIGHT!");
-    Text victoryMessage = new Text("VICTORY!");
-    Text defeatMessage = new Text("Defeat.");
+    private final Text welcomeMessage = new Text("Welcome to Final Reality!");
+    private final  Text chooseYourCharactersMessage = new Text("Choose 5 characters\n    to fight for you!");
+    private final Text chooseYourWeaponsMessage = new Text("  Choose 5 weapons to\nmassacre your enemies!");
+    private final Text nameErrorMessage = new Text("Names shouldn't be longer\n       than 12 characters!");
+    private final Text fightMessage = new Text("FIGHT!");
+    private final Text victoryMessage = new Text("VICTORY!");
+    private final Text defeatMessage = new Text("Defeat.");
+    private final Text charactersMessage = new Text("Your Characters");
+    private final Text battleLogMessage = new Text("Battle Log");
+    private final Text enemiesMessage = new Text("Your Enemies");
+    private final Text inventoryMessage = new Text("Inventory");
 
     /**
      * Graphical figures.
      */
-    GridPane charactersForm = new GridPane();
-    GridPane weaponsForm = new GridPane();
-    Path charactersArea = new Path();
-    Path enemiesArea = new Path();
-    Path logArea = new Path();
-    Path inventoryArea = new Path();
-    Line characterSeparator1 = new Line();
-    Line characterSeparator2 = new Line();
-    Line enemiesSeparator1 = new Line();
-    Line enemiesSeparator2 = new Line();
-    Line inventorySeparator1 = new Line();
-    Line inventorySeparator2 = new Line();
+    private final GridPane charactersForm = new GridPane();
+    private final GridPane weaponsForm = new GridPane();
+    private final Path charactersArea = new Path();
+    private final Path enemiesArea = new Path();
+    private final Path logArea = new Path();
+    private final Path inventoryArea = new Path();
+    private final Line characterSeparator1 = new Line();
+    private final Line characterSeparator2 = new Line();
+    private final Line enemiesSeparator1 = new Line();
+    private final Line enemiesSeparator2 = new Line();
+    private final Line inventorySeparator1 = new Line();
+    private final Line inventorySeparator2 = new Line();
+
+    /**
+     * Icons of the characters, weapons and enemies.
+     */
+    private final Image knightImage = new Image("file:img/knight.png");
+    private final ImageView knightImageView = new ImageView();
+    private final Image engineerImage = new Image("file:img/engineer.png");
+    private final ImageView engineerImageView = new ImageView();
+    private final Image thiefImage = new Image("file:img/thief.png");
+    private final ImageView thiefImageView = new ImageView();
+    private final Image blackMageImage = new Image("file:img/blackmage.png");
+    private final ImageView blackMageImageView = new ImageView();
+    private final Image whiteMageImage = new Image("file:img/whiteMage.png");
+    private final ImageView whiteMageImageView = new ImageView();
+    private final Image swordImage = new Image("file:img/sword.png");
+    private final ImageView swordImageView = new ImageView();
+    private final Image axeImage = new Image("file:img/axe.png");
+    private final ImageView axeImageView = new ImageView();
+    private final Image knifeImage = new Image("file:img/knife.png");
+    private final ImageView knifeImageView = new ImageView();
+    private final Image staffImage = new Image("file:img/staff.png");
+    private final ImageView staffImageView = new ImageView();
+    private final Image bowImage = new Image("file:img/bow.png");
+    private final ImageView bowImageView = new ImageView();
+    private final Image enemyImage = new Image("file:img/enemy.png");
+    private final ImageView enemyImageView = new ImageView();
+
+    /**
+     * Array with the images of the weapons.
+     */
+    private final ArrayList<ImageView> weaponImages = new ArrayList<>();
 
     /**
      * Rules of the game.
      */
-    Text rules = new Text();
+    private final Text rules = new Text();
 
     /**
      * Container of each log displayed during battle.
      */
-    LinkedList<Text> log = new LinkedList<>();
+    private final LinkedList<Text> log = new LinkedList<>();
 
     /**
      * Auxiliary launcher
@@ -289,6 +326,22 @@ public class FinalReality extends Application {
         nameErrorMessage.setLayoutY(550);
         nameErrorMessage.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
         nameErrorMessage.setVisible(false);
+        battleLogMessage.setLayoutX(100);
+        battleLogMessage.setLayoutY(80);
+        battleLogMessage.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        battleLogMessage.setVisible(false);
+        charactersMessage.setLayoutX(100);
+        charactersMessage.setLayoutY(430);
+        charactersMessage.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        charactersMessage.setVisible(false);
+        inventoryMessage.setLayoutX(650);
+        inventoryMessage.setLayoutY(430);
+        inventoryMessage.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        inventoryMessage.setVisible(false);
+        enemiesMessage.setLayoutX(650);
+        enemiesMessage.setLayoutY(80);
+        enemiesMessage.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        enemiesMessage.setVisible(false);
         root.getChildren().add(welcomeMessage);
         root.getChildren().add(rules);
         root.getChildren().add(seeRulesButton);
@@ -298,6 +351,10 @@ public class FinalReality extends Application {
         root.getChildren().add(victoryMessage);
         root.getChildren().add(defeatMessage);
         root.getChildren().add(nameErrorMessage);
+        root.getChildren().add(battleLogMessage);
+        root.getChildren().add(charactersMessage);
+        root.getChildren().add(inventoryMessage);
+        root.getChildren().add(enemiesMessage);
     }
 
     /**
@@ -417,18 +474,23 @@ public class FinalReality extends Application {
             switch (chosenClassName) {
                 case "Sword":
                     chosenSwordNames.add(chosenName);
+                    weaponImages.add(swordImageView);
                     break;
                 case "Axe":
                     chosenAxeNames.add(chosenName);
+                    weaponImages.add(axeImageView);
                     break;
                 case "Knife":
                     chosenKnifeNames.add(chosenName);
+                    weaponImages.add(knifeImageView);
                     break;
                 case "Staff":
                     chosenStaffNames.add(chosenName);
+                    weaponImages.add(staffImageView);
                     break;
                 case "Bow":
                     chosenBowNames.add(chosenName);
+                    weaponImages.add(bowImageView);
                     break;
             }
             numberOfWeapons++;
@@ -862,6 +924,55 @@ public class FinalReality extends Application {
             root.getChildren().add(thisText);
             thisText.setVisible(false);
         }
+
+        knightImageView.setImage(knightImage);
+        engineerImageView.setImage(engineerImage);
+        thiefImageView.setImage(thiefImage);
+        blackMageImageView.setImage(blackMageImage);
+        whiteMageImageView.setImage(whiteMageImage);
+        setImages(root, knightImageView, 400, 500);
+        setImages(root, engineerImageView, 400, 500);
+        setImages(root, thiefImageView, 400, 500);
+        setImages(root, blackMageImageView, 400, 500);
+        setImages(root, whiteMageImageView, 400, 500);
+
+        swordImageView.setImage(swordImage);
+        axeImageView.setImage(axeImage);
+        knifeImageView.setImage(knifeImage);
+        staffImageView.setImage(staffImage);
+        bowImageView.setImage(bowImage);
+        setImages(root, swordImageView, 650, 500);
+        setImages(root, axeImageView, 650, 500);
+        setImages(root, knifeImageView, 650, 500);
+        setImages(root, staffImageView, 650, 500);
+        setImages(root, bowImageView, 650, 500);
+
+        enemyImageView.setImage(enemyImage);
+        setImages(root, enemyImageView, 650, 150);
+    }
+
+    /**
+     * Sets images on the main node.
+     *
+     * @param root
+     *    the main node
+     * @param image
+     *    the image
+     * @param x
+     *    x position
+     * @param y
+     *    y position
+     *
+     * @since 1.05
+     */
+    private void setImages(Group root, ImageView image, int x, int y){
+        image.setFitWidth(150);
+        image.setFitHeight(200);
+        image.setLayoutX(x);
+        image.setLayoutY(y);
+        image.setCache(true);
+        root.getChildren().add(image);
+        image.setVisible(false);
     }
 
     /**
@@ -878,6 +989,9 @@ public class FinalReality extends Application {
                     equipButton.setVisible(false);
                     setFightAreaVisibility(false);
                     defeatMessage.setVisible(true);
+                    for(int i=0; i<TOTAL_NUMBER_OF_WEAPONS; i++){
+                        weaponImages.get(i).setVisible(false);
+                    }
                     status = 4;
                 }
                 if(controller.getGameStatus() == 1){
@@ -885,6 +999,9 @@ public class FinalReality extends Application {
                     equipButton.setVisible(false);
                     setFightAreaVisibility(false);
                     victoryMessage.setVisible(true);
+                    for(int i=0; i<TOTAL_NUMBER_OF_WEAPONS; i++){
+                        weaponImages.get(i).setVisible(false);
+                    }
                     status = 5;
                 }
                 if(status == 0){
@@ -966,6 +1083,44 @@ public class FinalReality extends Application {
                         updateLog(text);
                     }
                     controller.cleanLog();
+                    for(int i=0; i<TOTAL_NUMBER_OF_WEAPONS; i++){
+                        weaponImages.get(i).setVisible(i == currentWeapon);
+                    }
+                    if(controller.isKnight(currentCharacter)){
+                        knightImageView.setVisible(true);
+                        engineerImageView.setVisible(false);
+                        thiefImageView.setVisible(false);
+                        blackMageImageView.setVisible(false);
+                        whiteMageImageView.setVisible(false);
+                    }
+                    else if(controller.isEngineer(currentCharacter)){
+                        knightImageView.setVisible(false);
+                        engineerImageView.setVisible(true);
+                        thiefImageView.setVisible(false);
+                        blackMageImageView.setVisible(false);
+                        whiteMageImageView.setVisible(false);
+                    }
+                    else if(controller.isThief(currentCharacter)){
+                        knightImageView.setVisible(false);
+                        engineerImageView.setVisible(false);
+                        thiefImageView.setVisible(true);
+                        blackMageImageView.setVisible(false);
+                        whiteMageImageView.setVisible(false);
+                    }
+                    else if(controller.isBlackMage(currentCharacter)){
+                        knightImageView.setVisible(false);
+                        engineerImageView.setVisible(false);
+                        thiefImageView.setVisible(false);
+                        blackMageImageView.setVisible(true);
+                        whiteMageImageView.setVisible(false);
+                    }
+                    else if(controller.isWhiteMage(currentCharacter)){
+                        knightImageView.setVisible(false);
+                        engineerImageView.setVisible(false);
+                        thiefImageView.setVisible(false);
+                        blackMageImageView.setVisible(false);
+                        whiteMageImageView.setVisible(true);
+                    }
                 }
                 else if(status == 9){
                     setSetUpAreaVisibility(false);
@@ -1090,8 +1245,18 @@ public class FinalReality extends Application {
         currentWeaponBearer.setVisible(status);
         currentWeaponName.setVisible(status);
         currentEnemyName.setVisible(status);
+        enemyImageView.setVisible(status);
+        battleLogMessage.setVisible(status);
+        charactersMessage.setVisible(status);
+        enemiesMessage.setVisible(status);
+        inventoryMessage.setVisible(status);
         for(int i=0; i<16; i++){
             log.get(i).setVisible(status);
         }
+        knightImageView.setVisible(false);
+        engineerImageView.setVisible(false);
+        thiefImageView.setVisible(false);
+        blackMageImageView.setVisible(false);
+        whiteMageImageView.setVisible(false);
     }
 }

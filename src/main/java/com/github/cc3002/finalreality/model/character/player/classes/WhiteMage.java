@@ -103,6 +103,61 @@ public class WhiteMage extends AbstractPlayerCharacter {
     }
 
     /**
+     * Checks if this character is a knight.
+     *
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    @Override
+    public boolean isKnight(){
+        return false;
+    }
+
+    /**
+     * Checks if this character is an engineer.
+     *
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    @Override
+    public boolean isEngineer(){
+        return false;
+    }
+
+    /**
+     * Checks if this character is a thief.
+     *
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    @Override
+    public boolean isThief(){
+        return false;
+    }
+
+    /**
+     * Checks if this character is a black mage.
+     *
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    @Override
+    public boolean isBlackMage(){
+        return false;
+    }
+
+    /**
+     * Checks if this character is a white mage.
+     *
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    @Override
+    public boolean isWhiteMage(){
+        return true;
+    }
+
+    /**
      * Compares two White Mage objects for testing purposes.
      *
      * @param o

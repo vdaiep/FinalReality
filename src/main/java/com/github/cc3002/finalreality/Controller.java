@@ -995,4 +995,64 @@ public class Controller {
         currentPhase = new AttackPhase(this, index);
     }
 
+    /**
+     * Checks if this character is a knight.
+     *
+     * @param index
+     *    index of the character
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    public boolean isKnight(int index){
+        return getCharacters().get(index).isKnight();
+    }
+
+    /**
+     * Checks if this character is an engineer.
+     *
+     * @param index
+     *    index of the character
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    public boolean isEngineer(int index){
+        return getCharacters().get(index).isEngineer();
+    }
+
+    /**
+     * Checks if this character is a thief
+     *
+     * @param index
+     *    index of the character
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    public boolean isThief(int index){
+        return getCharacters().get(index).isThief();
+    }
+
+    /**
+     * Checks if this character is a black mage.
+     *
+     * @param index
+     *    index of the character
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    public boolean isBlackMage(int index){
+        return getCharacters().get(index).isBlackMage();
+    }
+
+    /**
+     * Checks if this character is a white mage.
+     *
+     * @param index
+     *    index of the character
+     * @return true if it is, false otherwise
+     * @since 1.05
+     */
+    public boolean isWhiteMage(int index){
+        return getCharacters().get(index).isWhiteMage();
+    }
+
 }

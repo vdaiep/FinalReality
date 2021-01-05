@@ -12,9 +12,9 @@ Context
 This project's goal is to create a (simplified) clone of _Final Fantasy_'s combat, a game developed
 by [_Square Enix_](https://www.square-enix.com).
 Broadly speaking, for the combat the player has a group of characters to control and a group of 
-enemies controlled by the computer.
+enemies controlled by the computer. The code is written in Java and built using the MVC design pattern.
 
-Version Notes: v1.05 (final)
+Version Notes: v1.05
 ----------------------------
 
 Choose 5 characters and 5 weapons to fight against 5 CPU-controlled enemies!
@@ -55,4 +55,13 @@ The team (characters or enemies) that has all its characters out of combat will 
 
 Choose your team wisely! Good luck!
 
-The code is written in Java and built using the MVC design pattern.
+Mid-Battle screenshot
+----------------------------
+
+![Battle Screenshot](img/battleScreenshot.png)
+
+Future releases
+----------------------------
+
+Future releases include the addition of a battle timer, randomization of enemies' stats and names, and the ability
+for mages to cast spells while holding a staff. Be sure to check out!

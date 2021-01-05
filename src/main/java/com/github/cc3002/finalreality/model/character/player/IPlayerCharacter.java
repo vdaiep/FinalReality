@@ -54,4 +54,44 @@ public interface IPlayerCharacter extends ICharacter {
    * @since 1.0
    */
   IWeapon getEquippedWeapon();
+
+  /**
+   * Checks if this character is a knight.
+   *
+   * @return true if it is, false otherwise
+   * @since 1.05
+   */
+  boolean isKnight();
+
+  /**
+   * Checks if this character is an engineer.
+   *
+   * @return true if it is, false otherwise
+   * @since 1.05
+   */
+  boolean isEngineer();
+
+  /**
+   * Checks if this character is a thief.
+   *
+   * @return true if it is, false otherwise
+   * @since 1.05
+   */
+  boolean isThief();
+
+  /**
+   * Checks if this character is a black mage.
+   *
+   * @return true if it is, false otherwise
+   * @since 1.05
+   */
+  boolean isBlackMage();
+
+  /**
+   * Checks if this character is a white mage.
+   *
+   * @return true if it is, false otherwise
+   * @since 1.05
+   */
+  boolean isWhiteMage();
 }
