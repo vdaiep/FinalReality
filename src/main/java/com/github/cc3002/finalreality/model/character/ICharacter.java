@@ -1,40 +1,97 @@
 package com.github.cc3002.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.weapon.Weapon;
-
 /**
  * This represents a character from the game.
  * A character can be controlled by the player or by the CPU (an enemy).
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Vicente Daie Pinilla.
+ *
+ * @version 1.05
+ * @since 1.0
  */
 public interface ICharacter {
 
   /**
+   * Adds this character to the turns queue.
+   *
+   * @since 1.0
+   */
+  void addToQueue();
+
+  /**
    * Sets a scheduled executor to make this character (thread) wait for {@code speed / 10}
    * seconds before adding the character to the queue.
+   *
+   * @since 1.0
    */
   void waitTurn();
 
   /**
-   * Returns this character's name.
+   * Checks if this object is an Enemy
+   *
+   * @return true if it is, false otherwise
+   * @since 1.05
+   */
+  boolean isEnemy();
+
+  /**
+   * Receives damage when attacked by another Character or Enemy.
+   *
+   * @param rawDamage
+   *    Damage received.
+   * @since 1.02
+   */
+  void getAttacked(int rawDamage);
+
+  /**
+   * Attacks another character, dealing 'attackDamage' damage if Enemy, or 'attackDamage' from its
+   * equipped weapon if PlayerCharacter.
+   *
+   * @param that
+   *    Character to be attacked.
+   * @since 1.02
+   */
+  void attack(ICharacter that);
+
+  /**
+   * Gets the name of the character.
+   *
+   * @return 'name' parameter
+   * @since 1.0
    */
   String getName();
 
   /**
-   * Equips a weapon to the character.
+   * Gets the current HP of the character.
+   *
+   * @return 'HP' parameter
+   * @since 1.0
    */
-  void equip(Weapon weapon);
+  int getHP();
 
   /**
-   * Return this character's equipped weapon.
+   * Gets the maximum HP of the character.
+   *
+   * @return 'maxHP' parameter
+   * @since 1.0
    */
-  Weapon getEquippedWeapon();
+  int getMaxHP();
 
   /**
-   * Returns this character's class.
+   * Gets the defense of the character.
+   *
+   * @return 'name' parameter
+   * @since 1.0
    */
-  CharacterClass getCharacterClass();
+  int getDefense();
+
+  /**
+   * Gets the living condition of the character.
+   *
+   * @return 'alive' parameter
+   * @since 1.0
+   */
+  boolean isAlive();
 }
+

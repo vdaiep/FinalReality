@@ -1,11 +1,20 @@
 package com.github.cc3002.finalreality.model.weapon;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class WeaponTest {
+/**
+ * Set of tests for the {@code AbstractWeapon} class.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Vicente Daie Pinilla.
+ * @see AbstractWeapon
+ *
+ * @version 1.04
+ * @since 1.02
+ */
+public class WeaponTest {
 
   private static final String AXE_NAME = "Test Axe";
   private static final String STAFF_NAME = "Test Staff";
@@ -13,30 +22,40 @@ class WeaponTest {
   private static final String BOW_NAME = "Test Bow";
   private static final String KNIFE_NAME = "Test Knife";
   private static final int DAMAGE = 15;
+  private static final int MAGIC_DAMAGE = 20;
   private static final int SPEED = 10;
+  private Axe testAxe;
+  private Staff testStaff;
+  private Sword testSword;
+  private Bow testBow;
+  private Knife testKnife;
 
-  private Weapon testAxe;
-  private Weapon testStaff;
-  private Weapon testSword;
-  private Weapon testBow;
-  private Weapon testKnife;
-
+  /**
+   * Setup method. Declares weapons.
+   *
+   * @since 1.02
+   */
   @BeforeEach
   void setUp() {
-    testAxe = new Weapon(AXE_NAME, DAMAGE, SPEED, WeaponType.AXE);
-    testStaff = new Weapon(STAFF_NAME, DAMAGE, SPEED, WeaponType.STAFF);
-    testSword = new Weapon(SWORD_NAME, DAMAGE, SPEED, WeaponType.SWORD);
-    testBow = new Weapon(BOW_NAME, DAMAGE, SPEED, WeaponType.BOW);
-    testKnife = new Weapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.KNIFE);
+    testAxe = new Axe(AXE_NAME, DAMAGE, SPEED);
+    testStaff = new Staff(STAFF_NAME, DAMAGE, SPEED, MAGIC_DAMAGE);
+    testSword = new Sword(SWORD_NAME, DAMAGE, SPEED);
+    testBow = new Bow(BOW_NAME, DAMAGE, SPEED);
+    testKnife = new Knife(KNIFE_NAME, DAMAGE, SPEED);
   }
 
+  /**
+   * Checks that the class' constructor and equals method work properly.
+   *
+   * @since 1.02
+   */
   @Test
   void constructorTest() {
-    var expectedAxe = new Weapon(AXE_NAME, DAMAGE, SPEED, WeaponType.AXE);
-    var expectedStaff = new Weapon(STAFF_NAME, DAMAGE, SPEED, WeaponType.STAFF);
-    var expectedSword = new Weapon(SWORD_NAME, DAMAGE, SPEED, WeaponType.SWORD);
-    var expectedBow = new Weapon(BOW_NAME, DAMAGE, SPEED, WeaponType.BOW);
-    var expectedKnife = new Weapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.KNIFE);
+    IWeapon expectedAxe = new Axe(AXE_NAME, DAMAGE, SPEED);
+    IWeapon expectedStaff = new Staff(STAFF_NAME, DAMAGE, SPEED, MAGIC_DAMAGE);
+    IWeapon expectedSword = new Sword(SWORD_NAME, DAMAGE, SPEED);
+    IWeapon expectedBow = new Bow(BOW_NAME, DAMAGE, SPEED);
+    IWeapon expectedKnife = new Knife(KNIFE_NAME, DAMAGE, SPEED);
 
     assertEquals(expectedAxe, testAxe);
     assertEquals(expectedAxe.hashCode(), testAxe.hashCode());
@@ -48,5 +67,6 @@ class WeaponTest {
     assertEquals(expectedBow.hashCode(), testBow.hashCode());
     assertEquals(expectedKnife, testKnife);
     assertEquals(expectedKnife.hashCode(), testKnife.hashCode());
+    assertEquals(MAGIC_DAMAGE, testStaff.getMagicDamage());
   }
 }
